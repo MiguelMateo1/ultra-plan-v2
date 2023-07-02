@@ -8,18 +8,16 @@ import circle3 from '../assets/images/landingPage/circle3.png';
 import Styles from '../assets/styles/LandingPageCSS';
 // components
 import { Logo } from '../components';
+import {LandingInfo} from '../components'
 
-
-import LandingInfo from './LandingInfo'
-
-const Landing = () => {
+const LandingPage = () => {
   return (
     <Styles>
     <div className='landing-page'>
      
       <nav>
         <Logo />
-        <h3>Ultra Plan</h3>
+        <h3>ltra Plan</h3>
       </nav>
       
       <div className='main-container'>
@@ -33,9 +31,10 @@ const Landing = () => {
             Skill <span>tracking</span> app
           </h1>
           <p>
-            Crucifix narwhal street art asymmetrical, humblebrag tote bag pop-up
-            fixie raclette taxidermy craft beer. Brunch bitters synth, VHS
-            crucifix heirloom meggings bicycle rights.
+          Introducing UltraPlan, a web app designed for a user start and 
+          track a new skill/subject they want to learn. Helping individuals
+          to easily create and monitor the progress of their skill in development,
+          giving a visual journey to help plan and stay focus on you goals.
           </p>
           <button>
             Login/Register
@@ -51,4 +50,4 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+export default LandingPage;
