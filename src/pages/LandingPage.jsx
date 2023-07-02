@@ -9,6 +9,8 @@ import Styles from '../assets/styles/LandingPageCSS';
 // components
 import { Logo } from '../components';
 import {LandingInfo} from '../components'
+// react
+import { Link } from 'react-router-dom';
 
 const LandingPage = () => {
   return (
@@ -36,9 +38,9 @@ const LandingPage = () => {
           to easily create and monitor the progress of their skill in development,
           giving a visual journey to help plan and stay focus on you goals.
           </p>
-          <button>
+          <Link to='/register' className='btn'>
             Login/Register
-          </button>
+          </Link>
         </div>
         <img src={landingImg} alt='job hunt' className='img main-img' />
       </div>
