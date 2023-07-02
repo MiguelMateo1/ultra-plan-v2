@@ -5,10 +5,19 @@ const Styles = styled.main`
     background-color: var(--primary-4);
     overflow-x: hidden;
     max-width: 100%;
-  }
-
-  .landing-hero {
-    position: relative
+    background-image: linear-gradient(
+      140deg,
+      hsl(247deg 68% 23%) 0%,
+      hsl(219deg 100% 23%) 12%,
+      hsl(213deg 100% 25%) 23%,
+      hsl(208deg 100% 26%) 34%,
+      hsl(201deg 100% 26%) 45%,
+      hsl(194deg 100% 25%) 56%,
+      hsl(185deg 100% 23%) 67%,
+      hsl(176deg 100% 23%) 78%,
+      hsl(166deg 71% 29%) 89%,
+      hsl(144deg 30% 41%) 100%
+    );
   }
 
   nav {
@@ -26,6 +35,11 @@ const Styles = styled.main`
     width: 60px;
     margin-left: 17px;
   }
+  h3 {
+    margin-left: -12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+  }
   .main-container {
     margin: 0 auto;
     height: 100vh;
@@ -37,7 +51,7 @@ const Styles = styled.main`
     align-items: center;
     max-width: var(--max-width);
     text-align: start;
-    position: relative
+    position: relative;
   }
 
   .info {
