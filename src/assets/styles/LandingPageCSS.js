@@ -5,6 +5,7 @@ const Styles = styled.main`
     background-color: var(--primary-4);
     overflow-x: hidden;
     max-width: 100%;
+    color: #fff;
     background-image: linear-gradient(
       140deg,
       hsl(247deg 68% 23%) 0%,
@@ -76,11 +77,12 @@ const Styles = styled.main`
     margin-bottom: 2rem;
     z-index: 2;
   }
-  button {
+  .btn {
     color:  var(--secondary-2);
     background-color: var(--primary-6);
+    padding: 8px 13px;
   }
-  button:hover {
+  .btn:hover {
     background-color: var(--primary-4);
   }
 

@@ -7,6 +7,7 @@ const Styles = styled.section`
   color: var(--grey-7);
   position: relative;
   padding-bottom: 4rem;
+  z-index: 2;
 }
 
 .title-area {
