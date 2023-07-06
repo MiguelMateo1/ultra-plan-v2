@@ -2,34 +2,27 @@ import { useState } from 'react';
 import { Logo, FormRow } from '../components';
 import styled from 'styled-components'
 import { toast } from 'react-toastify';
-import axios from 'axios';
+// axios
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser, registerUser } from '../features/user/userSlice';
 
-// test connection
-axios.get('http://localhost:8000/api')
-  .then(function (response) {
-    // handle success
-    console.log(response.data);
-  })
-  .catch(function (error) {
-    // handle error
-    console.log(error);
-  })
-  .finally(function () {
-    // always executed
-  });
 
 const initialState = {
-  name: '',
+  first_name: '',
+  last_name: '',
   email: '',
   password: '',
-  member: false,
 };
+
 
 function Register() {
   const [values, setValues] = useState(initialState);
+  const [member, setMember] = useState(true)
+  const {user, isLoading} = useSelector((store) => store.user);
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
-    const name = e.target.name;
+    const name = e.target.id;
     const value = e.target.value;
 
     // dynamic object keys, [property passed in braket]
@@ -38,36 +31,59 @@ function Register() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const { name, email, password, member } = values;
-    if (!email || !password || (!member && !name)) {
+    const { first_name, last_name, email, password } = values;
+    if (!email || !password || (!member && !first_name) || (!member && !last_name)) {
       // toast.error('Please fill out all fields');
         toast.warning('Please fill out all fields');
       return;
     }
+    
     if (member) {
-      console.log("loging in")
-      return;
+      dispatch(loginUser(values))
+      return
     }
-    console.log("register")
+
+    if (!member) {
+      dispatch(registerUser(values))
+      console.log(values)
+      return
+    }
+
+    // axios.post('http://localhost:8000/api/post', values)
+    //   .then((result) => {
+    //     console.log(result)
+    //     navigate(`/${values.first_name}`);
+    //   })
+    //   .catch(err => console.log(err));
   };
 
-  // toggles the member to true/false in the state
+  // toggles member to true/false in the state
   const toggleMember = () => {
-    setValues({ ...values, member: !values.member });
+    setMember(!member);
   };
 
   return (
     <Styles>
       <form className='form' onSubmit={onSubmit}>
         <Logo />
-        <h3>{values.member ? 'Login' : 'Register'}</h3>
+        <h3>{member ? 'Login' : 'Register'}</h3>
 
         {/* form name field */}
-        {!values.member && (
+        {!member && (
           <FormRow
             type='text'
-            name='name'
-            value={values.name}
+            labelText='first name'
+            name='first_name'
+            value={values.first_name}
+            handleChange={handleChange}
+          />
+        )}
+        {!member && (
+          <FormRow
+            type='text'
+            labelText='last name'
+            name='last_name'
+            value={values.last_name}
             handleChange={handleChange}
           />
         )}
@@ -85,11 +101,11 @@ function Register() {
           value={values.password}
           handleChange={handleChange}
         />
-        <button type='submit' className='btn btn-block'>submit</button>
+        <button type='submit' className='btn btn-block' disabled={isLoading}>submit</button>
         <p>
-          {values.member ? 'Not a member yet?' : 'Already a member?'}
+          {member ? 'Not a member yet?' : 'Already a member?'}
           <button type='button' onClick={toggleMember} className='member-btn'>
-            {values.member ? 'Register' : 'Login'}
+            {member ? 'Register' : 'Login'}
           </button>
         </p> 
       </form>
