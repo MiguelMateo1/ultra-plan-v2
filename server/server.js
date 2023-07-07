@@ -1,6 +1,8 @@
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const app = express();
 app.use(cors());  
@@ -32,15 +34,46 @@ app.post('/api/login', (req, res) => {
             console.error('Error executing the query: ' + err);
             return res.status(500).json({message: "'Internal server error"})
         }
-        console.log(result)
         if (result.length > 0) {
             // User exists
+            const id = result[0].id
+            // generate access token
+            const token = jwt.sign({id}, process.env.ACCESS_TOKEN, {
+                expiresIn: 300,
+            });
+            
+            delete result[0].password
+            result[0].token = token
+            return res.json({auth: true, result: result});
           } else {
             return res.json({ message: 'Invalid email or password' });
           }
     })
 });
 // login user End=========
+ 
+// token verify fucn
+const verify = (req, res, next) => {
+    const token = req.headers['acces-token']
+
+    if (!token) {
+        res.send('no token')
+    } else {
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+            if (err) {
+                res.json({auth: false, message: 'failed to authenticate'});
+            } else {
+                req.userId = decoded.id;
+                next();
+            }
+        })
+    }
+}
+// token verify fun END
+
+app.get('/userAuth', verify , (req, res) => {
+    res.send('authenticate verify seccess')
+} )
 
 // register user 
 app.post('/api/register', (req, res) => {
