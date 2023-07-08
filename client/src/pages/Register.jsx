@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import Styles from '../assets/styles/RegisterCSS';
+import { useState, useEffect } from 'react';
 import { Logo, FormRow } from '../components';
-import styled from 'styled-components'
 import { toast } from 'react-toastify';
 // axios
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, registerUser } from '../features/user/userSlice';
-
+import { useNavigate } from 'react-router-dom';
 
 const initialState = {
   first_name: '',
@@ -20,6 +20,7 @@ function Register() {
   const [member, setMember] = useState(true)
   const {user, isLoading} = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const name = e.target.id;
@@ -45,7 +46,6 @@ function Register() {
 
     if (!member) {
       dispatch(registerUser(values))
-      console.log(values)
       return
     }
 
@@ -56,6 +56,14 @@ function Register() {
     //   })
     //   .catch(err => console.log(err));
   };
+
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate('/');
+      }, 1000);
+    }
+  }, [user]);
 
   // toggles member to true/false in the state
   const toggleMember = () => {
@@ -113,43 +121,4 @@ function Register() {
   );
 }
 
-// css styles
-const Styles = styled.section`
-  display: grid;
-  align-items: center;
-  min-height: 100vh;
-  .logo {
-    width: 60px;
-    display: block;
-    margin: 0 auto;
-    margin-bottom: 1.3rem;
-  }
-  .form {
-    max-width: 400px;
-    border-top: 5px solid var(--primary-3);
-  }
-
-  h3 {
-    text-align: center;
-  }
-  p {
-    margin: 0;
-    margin-top: 1rem;
-    text-align: center;
-  }
-  .btn {
-    margin-top: 1rem;
-    transition: var(--transition);
-  }
-  .btn:hover {
-    background-color: var(--primary-3);
-  }
-  .member-btn {
-    background: transparent;
-    border: transparent;
-    color: var(--secondary-4);
-    cursor: pointer;
-    letter-spacing: var(--letterSpacing);
-  }
-`
 export default Register;
