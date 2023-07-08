@@ -7,6 +7,7 @@ import {addUserToLocalStorage,getUserFromLocalStorage,removeUserFromLocalStorage
 // const navigate = useNavigate()
 const initialState = {
     isLoading: false,
+    sidebarOpen: false,
     user: getUserFromLocalStorage(),
 };
 
@@ -30,7 +31,6 @@ export const loginUser = createAsyncThunk(
         try {
           const response = await axios.post('http://localhost:8000/api/login', user)
         //   console.log(JSON.stringify(user));
-        console.log(response)
           return response.data
         } catch (err) {
             console.log(err, 'error loging in');
@@ -42,9 +42,20 @@ export const loginUser = createAsyncThunk(
 const userSlice = createSlice({
     name: 'user',
     initialState,
-    // reducers: {
-
-    // },
+    reducers: {
+      toggleSidebar: (state) => {
+        state.sidebarOpen = !state.sidebarOpen
+      },
+      userLogout: (state, {payload}) => {
+        state.user = null;
+        state.sidebarOpen = false;
+        removeUserFromLocalStorage();
+        console.log(payload)
+        if (payload) {
+          toast.success(payload);
+        }
+      }
+    },
     extraReducers: (builder) => {
         builder
          //   login user==========
@@ -52,7 +63,6 @@ const userSlice = createSlice({
             state.isLoading = true;
           })
           .addCase(loginUser.fulfilled, (state, { payload }) => {
-            console.log(payload)
             state.isLoading = false;
             if (payload.message == 'Invalid email or password') {
                 toast.warning('Invalid email or password');
@@ -71,17 +81,17 @@ const userSlice = createSlice({
           .addCase(registerUser.pending, (state) => {
             state.isLoading = true;
           })
-          .addCase(registerUser.fulfilled, (state, action) => {
+          .addCase(registerUser.fulfilled, (state, {payload}) => {
             state.isLoading = false;
-            if (action.payload.message == 'User already exists') {
+            if (payload.message == 'User already exists') {
                 toast.warning('User already exists');
                 return;
             } 
-            if (action.payload.message == 'error') {
+            if (payload.message == 'error') {
                 toast.warning('server error, try again later');
                 return;
             } 
-            const user = action.meta.arg;
+            const user = payload.result[0];
             state.user = user;
             addUserToLocalStorage(user);
             toast.success(`Hello There ${user.first_name}`);
@@ -93,4 +103,5 @@ const userSlice = createSlice({
         }
 });
 
+export const { toggleSidebar, userLogout } = userSlice.actions
 export default userSlice.reducer;
