@@ -91,13 +91,27 @@ app.post('/api/register', (req, res) => {
             db.query(sql, [first_name, last_name ,email, password], (err, result) => {
                 if(err) {
                     return res.json({message: "error"})
+                } else {
+                    // user created 
+                    // get new user data
+                    const sql = "SELECT * FROM app_users WHERE email = ? AND password = ?";
+                    db.query(sql, [email,password], (err, result) => {
+                    console.log(result)
+                    const id = result[0].id
+                    // generate access token
+                    const token = jwt.sign({id}, process.env.ACCESS_TOKEN, {
+                        expiresIn: 300,
+                    });
+                
+                    delete result[0].password
+                    result[0].token = token
+                    return res.json({auth: true, result: result});
+                    })
                 }
-                // user created 
-                return res.json(result);
             })
         }
     })
-})
+});
 // register user End====
 
 // test get user**
