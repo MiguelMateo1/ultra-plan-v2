@@ -11,6 +11,7 @@ const initialState = {
     user: getUserFromLocalStorage(),
 };
 
+// register user
 export const registerUser = createAsyncThunk(
     'user/registerUser',
     async (user, thunkAPI) => {
@@ -23,8 +24,9 @@ export const registerUser = createAsyncThunk(
             throw err;
       }
     }
-)
+);
 
+// login user
 export const loginUser = createAsyncThunk(
     'user/loginUser',
     async (user, thunkAPI) => {
@@ -37,7 +39,23 @@ export const loginUser = createAsyncThunk(
             thunkAPI.rejectWithValue(err.response);
         }
     }
-)
+);
+
+// update user
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async ( user, thunkAPI) => {
+    try {
+      const response = await axios.post('http://localhost:8000/update', user, { headers: { authorization: initialState.user.token } });
+      console.log(user.id)
+      console.log(response.data)
+      return response.data
+    } catch (err) {
+      console.log(err)
+      return (err);
+    }
+  }
+);
 
 const userSlice = createSlice({
     name: 'user',
@@ -97,6 +115,35 @@ const userSlice = createSlice({
             toast.success(`Hello There ${user.first_name}`);
           })
           .addCase(registerUser.rejected, (state, { payload }) => {
+            state.isLoading = false;
+            toast.error(payload);
+          })
+          // update user
+          .addCase(updateUser.pending, (state) => {
+            state.isLoading = true;
+          })
+          .addCase(updateUser.fulfilled, (state, action) => {
+            state.isLoading = false;
+            if (action.payload == 'no token' || action.payload == 'error') {
+              console.log('no token')
+              return;
+            }
+            if (action.payload.message == 'Request failed with status code 500') {
+              console.log('reques failed')
+              return;
+            }
+            if (action.payload.message == 'User already exists') {
+              toast.success(`User already exists`);
+              return;
+            }
+
+            const newUser = action.payload.result[0];
+
+            state.user = newUser;
+            addUserToLocalStorage(newUser);
+            toast.success(`User Updated!`);
+          })
+          .addCase(updateUser.rejected, (state, { payload }) => {
             state.isLoading = false;
             toast.error(payload);
           })
