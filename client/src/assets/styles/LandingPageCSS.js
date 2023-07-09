@@ -88,7 +88,7 @@ const Styles = styled.main`
 
   .circles {
     position: absolute;
-    top: 20%;
+    top: 28%;
     left: 100px;
     width: 100%;
     max-width: 900px;
