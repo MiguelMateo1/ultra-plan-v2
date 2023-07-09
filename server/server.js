@@ -39,41 +39,78 @@ app.post('/api/login', (req, res) => {
             const id = result[0].id
             // generate access token
             const token = jwt.sign({id}, process.env.ACCESS_TOKEN, {
-                expiresIn: 300,
+                expiresIn: 3000,
             });
             
             delete result[0].password
             result[0].token = token
             return res.json({auth: true, result: result});
           } else {
-            return res.json({ message: 'Invalid email or password' });
+            return res.json({auth: false, message: 'Invalid email or password' });
           }
     })
 });
 // login user End=========
  
-// token verify fucn
+// token verify func
 const verify = (req, res, next) => {
-    const token = req.headers['acces-token']
+    const token = req.headers.authorization
 
     if (!token) {
         res.send('no token')
     } else {
-        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
             if (err) {
-                res.json({auth: false, message: 'failed to authenticate'});
+                res.json({err: err,auth: false, message: 'failed to authenticate'});
             } else {
-                req.userId = decoded.id;
+                // req.user = user.id;
                 next();
             }
         })
     }
-}
-// token verify fun END
+};
+// token verify func END
 
-app.get('/userAuth', verify , (req, res) => {
-    res.send('authenticate verify seccess')
-} )
+// update user
+app.post('/update', verify , (req, res) => {
+    const {first_name, last_name, email, password, id} = req.body;
+
+    // checks if new email exist
+    const checkSql = "SELECT * FROM app_users WHERE email = ?";
+    db.query(checkSql, [email], (err, result) => {
+        
+        const newUserId = result[0].id
+        if (newUserId != id) {
+            return res.json({ message: 'User already exists' });
+         // checks if user  emailexist END====
+
+        } else {
+            // update new user info
+            const sql = "UPDATE app_users SET first_name = IF(?='', first_name, ?), last_name = IF(?='', last_name, ?), email = IF(?='', email, ?), password = IF(?='', password, ?) WHERE id = ?";
+            db.query(sql, [first_name, first_name, last_name, last_name, email, email, password, password, id], (err, result) => {
+                if(err) {
+                    return res.json({message: "error"})
+                } else {
+                    // user updated 
+                    // get updated user data
+                    const sql = "SELECT * FROM app_users WHERE id = ?";
+                        db.query(sql, [id], (err, result) => {
+                        // generate access token
+                        const token = jwt.sign({id}, process.env.ACCESS_TOKEN, {
+                            expiresIn: 300,
+                        });
+                        
+                        // deletes password and add token to results before returning the date
+                        delete result[0].password
+                        result[0].token = token
+                    return res.json({auth: true, result: result});
+                    })
+                }
+            })
+        }
+    })
+});
+//====== end update user
 
 // register user 
 app.post('/api/register', (req, res) => {
@@ -85,6 +122,7 @@ app.post('/api/register', (req, res) => {
         if (result.length > 0) {
             return res.json({ message: 'User already exists' });
      // checks if user exist END====
+
         } else {
             // register new user
             const sql = "INSERT INTO app_users(first_name, last_name, email, password) VALUES (?,?,?,?)";
@@ -96,16 +134,17 @@ app.post('/api/register', (req, res) => {
                     // get new user data
                     const sql = "SELECT * FROM app_users WHERE email = ? AND password = ?";
                     db.query(sql, [email,password], (err, result) => {
-                    console.log(result)
-                    const id = result[0].id
-                    // generate access token
-                    const token = jwt.sign({id}, process.env.ACCESS_TOKEN, {
-                        expiresIn: 300,
-                    });
-                
-                    delete result[0].password
-                    result[0].token = token
-                    return res.json({auth: true, result: result});
+
+                        const id = result[0].id
+                        // generate access token
+                        const token = jwt.sign({id}, process.env.ACCESS_TOKEN, {
+                            expiresIn: 300,
+                        });
+                    
+                        // deletes password and add token to results before returning the date
+                        delete result[0].password
+                        result[0].token = token
+                        return res.json({auth: true, result: result});
                     })
                 }
             })
