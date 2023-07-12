@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const skillsDB = require('./skillsDB.js');
 require('dotenv').config();
 
 const app = express();
@@ -152,6 +153,12 @@ app.post('/api/register', (req, res) => {
     })
 });
 // register user End====
+
+// skills request
+app.post('/skills', verify, (req,res) => {
+    skillsDB.createSkill(req,res,db);
+});
+
 
 // test get user**
 app.get('/:first_name', (req, res) => {
