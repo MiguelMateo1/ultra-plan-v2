@@ -46,13 +46,18 @@ export const updateUser = createAsyncThunk(
   'user/updateUser',
   async ( user, thunkAPI) => {
     try {
-      const response = await axios.post('http://localhost:8000/update', user, { headers: { authorization: initialState.user.token } });
-      console.log(user.id)
+      const response = await axios.post('http://localhost:8000/update', user, { 
+        headers: { authorization: thunkAPI.getState().user.user.token} 
+      });
       console.log(response.data)
+      if (response.data.auth == false) {
+        thunkAPI.dispatch(userLogout());
+        return thunkAPI.rejectWithValue('Unauthorized, Logging Out..');
+      }
       return response.data
     } catch (err) {
-      console.log(err)
-      return (err);
+        console.log(err)
+      return thunkAPI.rejectWithValue(err.response.data.message);
     }
   }
 );
