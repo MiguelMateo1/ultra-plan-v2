@@ -37,6 +37,9 @@ const Profile = () => {
     }
 
     dispatch(updateUser(userData, user.token));
+    setUserData(prev => {
+      return {...prev, password: ""}
+    })
   };
 
   const handleChange = (e) => {
