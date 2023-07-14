@@ -154,9 +154,13 @@ app.post('/api/register', (req, res) => {
 });
 // register user End====
 
-// skills request
-app.post('/skills', verify, (req,res) => {
+// add skills
+app.post('/add-skill', verify, (req,res) => {
     skillsDB.createSkill(req,res,db);
+});
+// get all skills
+app.get('/get-skills', (req,res) => {
+    skillsDB.showSkill(req,res,db);
 });
 
 
