@@ -3,8 +3,13 @@ import Styles from '../../assets/styles/ProfileFormCSS';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import {handleChange,clearValues,createSkill,editSkill} from '../../features/skills/skillsSlice';
-import { useEffect } from 'react';
-
+// icons
+import { 
+  IoBookSharp,IoBarbellSharp,IoBasketballSharp,
+  IoBicycleSharp,IoEasel,IoFlaskSharp,IoHeadsetSharp,
+  IoHardwareChipSharp,IoPencilSharp,IoReaderSharp,IoSchool,
+  IoTelescopeSharp,IoTerminal,IoDesktop} 
+from "react-icons/io5";
 
 const addSkill = () => {
   const {
@@ -15,6 +20,8 @@ const addSkill = () => {
     hour_per_day_options,
     days_per_week_options,
     hour_per_day,
+    skill_icon,
+    // completed_hours,
     isEditing,
     editSkillId,
   } = useSelector((store) => store.skill);
@@ -22,13 +29,20 @@ const addSkill = () => {
   const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
+  // const [isActive, setIsActive] = useState(false);
   const userId = user.id
 
-
+  // icons
+  const skillIcons = [<IoBookSharp/>,<IoBarbellSharp/>,<IoBasketballSharp/>,<IoBicycleSharp/>,
+    <IoEasel/>,<IoFlaskSharp/>,<IoHeadsetSharp/>,<IoHardwareChipSharp/>, <IoPencilSharp/>,
+    <IoReaderSharp/>,<IoSchool/>,<IoTelescopeSharp/>,<IoTerminal/>,<IoDesktop/>
+  ];
+  
+// hanle from submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!skill_name || !total_hours|| !days_per_week || !hour_per_day) {
+    if (!skill_name || !total_hours|| !days_per_week || !hour_per_day || !skill_icon ) {
       toast.error('Please fill out all fields');
       return;
     }
@@ -36,30 +50,37 @@ const addSkill = () => {
       dispatch(
         editSkill({
           skillId: editSkillId,
-          skill: { skill_name, total_hours, days_per_week, hour_per_day },
+          skill: { skill_name, total_hours, days_per_week, hour_per_day, skill_icon },
         })
       );
       return;
     }
-    dispatch(createSkill({ skill_name, total_hours, days_per_week, hour_per_day, userId}));
+    dispatch(createSkill({ skill_name, total_hours, days_per_week, hour_per_day, userId, skill_icon}));
   };
+  // hanle from submit END=====
 
+
+  // handle inpust + icon
   const handleSkillInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     dispatch(handleChange({ name, value }));
   };
 
-  // useEffect(() => {
-  //   if (!isEditing) {
-  //     dispatch(
-  //       handleChange({
-  //         name: 'jobLocation',
-  //         value: user.location,
-  //       })
-  //     );
-  //   }
-  // }, []);
+  const handleSkillIcon = (e,selectedIcon) => {
+    // get all icon and remove active class
+    const siblings = document.querySelectorAll('.skill-icon');
+    siblings.forEach(s => {
+      s.classList.remove('active')
+    })
+    // sets active class to clicked icon
+    e.currentTarget.classList.add('active')
+    // updates state
+    const name = 'skill_icon';
+    const value = selectedIcon;
+    dispatch(handleChange({ name, value }));
+  };
+  // handle inpust + icon END====
 
   return (
     <Styles>
@@ -98,6 +119,20 @@ const addSkill = () => {
             handleChange={handleSkillInput}
             list={hour_per_day_options}
           />
+          {/* icons select */}
+          <div className='form-row icon-row'>
+            <h3 className='form-label'>select icon</h3>
+            {skillIcons.map((icon,index)=> {
+              return <div 
+                key={index} 
+                className={`skill-icon`}
+                onClick={(e)=> handleSkillIcon(e,index)}
+              >
+                {icon}
+              </div>
+            })}
+          </div>
+
           <div className='btn-container'>
             <button
               type='button'
