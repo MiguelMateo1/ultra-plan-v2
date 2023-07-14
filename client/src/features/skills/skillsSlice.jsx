@@ -9,6 +9,8 @@ const initialState = {
   days_per_week_options: [1,2,3,4,5,6,7],
   hour_per_day: 1,
   hour_per_day_options: [1, 2, 3, 4, 5, 6],
+  skill_icon: '',
+  completed_hours: 0,
   isEditing: false,
   editJobId: '',
 };
@@ -19,7 +21,7 @@ export const createSkill = createAsyncThunk(
     'skill/createSkill',
     async (skill, thunkAPI) => {
         try {
-          const response = await axios.post('http://localhost:8000/skills', skill, { 
+          const response = await axios.post('http://localhost:8000/add-skill', skill, { 
             headers: { authorization: thunkAPI.getState().user.user.token} 
           });
           thunkAPI.dispatch(clearValues());
@@ -79,9 +81,14 @@ const skillsSlice = createSlice({
       .addCase(createSkill.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createSkill.fulfilled, (state) => {
+      .addCase(createSkill.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        toast.success('Job Created');
+        console.log(payload)
+        if (payload.auth == false) {
+          toast.success('Unauthorized, re-login');
+          return
+        }
+        toast.success('Skill Created');
       })
       .addCase(createSkill.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -98,7 +105,7 @@ const skillsSlice = createSlice({
       })
       .addCase(editSkill.fulfilled, (state) => {
         state.isLoading = false;
-        toast.success('Job Modified...');
+        toast.success('Skill Modified...');
       })
       .addCase(editSkill.rejected, (state, { payload }) => {
         state.isLoading = false;
