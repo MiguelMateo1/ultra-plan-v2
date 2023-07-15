@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { showLoading, hideLoading, getAllSkills } from '../allSkills/allSkillsSlice';
+
 const initialState = {
   isLoading: false,
   skill_name: '',
@@ -12,7 +14,7 @@ const initialState = {
   skill_icon: '',
   completed_hours: 0,
   isEditing: false,
-  editJobId: '',
+  editSkillId: '',
 };
 
 
@@ -36,13 +38,16 @@ export const createSkill = createAsyncThunk(
 export const deleteSkill = createAsyncThunk(
     'skill/deleteSkill',
     async (skillId, thunkAPI) => {
+      thunkAPI.dispatch(showLoading());
         try {
-          const response = await axios.post(`http://localhost:8000/skills/${skillId}`)
-        //   console.log(JSON.stringify(user));
+          const response = await axios.delete(`http://localhost:8000/skills/${skillId}`, { 
+            headers: { authorization: thunkAPI.getState().user.user.token} 
+          });
+          thunkAPI.dispatch(getAllSkills());
           return response.data
         } catch (err) {
-            console.log(err, 'error deleting');
-            thunkAPI.rejectWithValue(err.response);
+            thunkAPI.dispatch(hideLoading())
+            return thunkAPI.rejectWithValue(err.response);
         }
     }
 );
@@ -52,8 +57,10 @@ export const editSkill = createAsyncThunk(
   'skill/editSkill',
   async ( {skillId, skill}, thunkAPI) => {
     try {
-      const response = await axios.post(`http://localhost:8000/skills/${skillId}`, skill);
-      console.log(response.data)
+      const response = await axios.patch(`http://localhost:8000/skills/${skillId}`, skill, { 
+        headers: { authorization: thunkAPI.getState().user.user.token} 
+      });
+      thunkAPI.dispatch(clearValues());
       return response.data
     } catch (err) {
         console.log(err)
@@ -72,7 +79,7 @@ const skillsSlice = createSlice({
     clearValues: () => {
       return initialState
     },
-    setEditJob: (state, { payload }) => {
+    setEditSkill: (state, { payload }) => {
       return { ...state, isEditing: true, ...payload };
     },
   },
@@ -95,7 +102,7 @@ const skillsSlice = createSlice({
         toast.error(payload);
       })
       .addCase(deleteSkill.fulfilled, (state, { payload }) => {
-        toast.success(payload);
+        toast.success('Job deleted');
       })
       .addCase(deleteSkill.rejected, (state, { payload }) => {
         toast.error(payload);
@@ -103,8 +110,13 @@ const skillsSlice = createSlice({
       .addCase(editSkill.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(editSkill.fulfilled, (state) => {
+      .addCase(editSkill.fulfilled, (state, {payload}) => {
+        console.log(payload)
         state.isLoading = false;
+        if (payload == 'no token') {
+          toast.success('not able to update, please login again');
+           return
+        }
         toast.success('Skill Modified...');
       })
       .addCase(editSkill.rejected, (state, { payload }) => {
@@ -114,6 +126,6 @@ const skillsSlice = createSlice({
   },
 });
 
-export const { handleChange, clearValues, setEditJob } = skillsSlice.actions;
+export const { handleChange, clearValues, setEditSkill } = skillsSlice.actions;
 
 export default skillsSlice.reducer;

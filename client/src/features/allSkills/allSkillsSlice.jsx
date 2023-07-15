@@ -17,7 +17,6 @@ export const getAllSkills = createAsyncThunk(
   async (userId, thunkAPI) => {
       try {
         const response = await axios.get('http://localhost:8000/get-skills', {headers: {userId: userId}});
-        console.log(response)
         return response.data;
       } catch (error) {
         return console.log(error);
@@ -74,7 +73,6 @@ export const {
   showLoading,
   hideLoading,
   handleChange,
-  clearAllJobsState,
 } = allSkillsSlice.actions;
 
 export default allSkillsSlice.reducer;
