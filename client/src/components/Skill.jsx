@@ -1,9 +1,10 @@
-import { FaLocationArrow, FaBriefcase, FaCalendarAlt } from 'react-icons/fa';
+import { FaLocationArrow, FaCalendarAlt, FaCalendarWeek, FaHourglassHalf, FaClipboardList } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import Styles from '../assets/styles/Skill';
+import Styles from '../assets/styles/SkillCSS';
 import { useDispatch } from 'react-redux';
 import SkillInfo from './SkillInfo';
-import { deleteSkill } from '../features/skills/skillsSlice';
+import { deleteSkill, setEditSkill } from '../features/skills/skillsSlice';
+import { formatDistance, subDays, add, format } from 'date-fns'
 
 import { 
   IoBookSharp,IoBarbellSharp,IoBasketballSharp,
@@ -21,10 +22,21 @@ const Skill = ({
   date_created,
   icon,
   completed_hours,
+  isEditing,
 }) => {
   const dispatch = useDispatch();
 
-  const date = 'MMM Do, YYYY';
+  // calculate the estimated coompleteion date
+  const hoursPerWeek = days_per_week * hour_per_day;
+  const totalWeeks = (total_hours / hoursPerWeek);
+  const daysToComplete = Math.round(totalWeeks * 7);
+
+  const startDate = format(new Date(date_created), 'MMM dd, yyyy');
+  const completeDate = add(new Date(startDate), {days: daysToComplete});
+  const completeDay = format(new Date(completeDate),'MMM dd, yyyy');
+  // calculate the estimated coompleteion date END=====
+
+// icon to chose from when creating a skill
   const skillIcons = [<IoBookSharp/>,<IoBarbellSharp/>,<IoBasketballSharp/>,<IoBicycleSharp/>,
       <IoEasel/>,<IoFlaskSharp/>,<IoHeadsetSharp/>,<IoHardwareChipSharp/>, <IoPencilSharp/>,
       <IoReaderSharp/>,<IoSchool/>,<IoTelescopeSharp/>,<IoTerminal/>,<IoDesktop/>
@@ -41,11 +53,11 @@ const Skill = ({
       </header>
       <div className='content'>
         <div className='content-center'>
-          <SkillInfo icon={<FaLocationArrow />} text={`start date 4/33/2023`}/>
-          <SkillInfo icon={<FaCalendarAlt />} text={date} />
-          <SkillInfo icon={<FaBriefcase />} text={days_per_week} />
-          <SkillInfo icon={<FaBriefcase />} text={hour_per_day} />
-          <SkillInfo icon={<FaBriefcase />} text={`completed hours${completed_hours}`} />
+          <SkillInfo icon={<FaLocationArrow />} text={startDate} title={'Start date'} />
+          <SkillInfo icon={<FaCalendarAlt />} text={completeDay} title={'Estimate end date'} />
+          <SkillInfo icon={<FaCalendarWeek />} text={`${days_per_week} - Days per week`} />
+          <SkillInfo icon={<FaHourglassHalf />} text={`${hour_per_day} - hour per day`} />
+          <SkillInfo icon={<FaClipboardList />} text={`${completed_hours} - completed hours`} c='hour' />
           <div className={`status`}>in progress</div>
         </div>
         <footer>
@@ -60,7 +72,8 @@ const Skill = ({
                     total_hours,
                     skill_name,
                     days_per_week,
-                    hour_per_day
+                    hour_per_day,
+                    icon
                   })
                 )
               }
@@ -72,7 +85,7 @@ const Skill = ({
               className='btn delete-btn'
               onClick={() => dispatch(deleteSkill(id))}
             >
-              delete
+              Delete
             </button>
           </div>
         </footer>
