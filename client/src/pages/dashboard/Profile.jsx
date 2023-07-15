@@ -75,13 +75,13 @@ const Profile = () => {
           />
           <FormRow
             type='password'
-            labelText='create new passord'
+            labelText='update password'
             name='password'
             value={userData.password}
             handleChange={handleChange}
           />
           <button type='submit' className='btn btn-block' disabled={btnToggle(initialValues, userData)}>
-            {isLoading ? 'Please Wait...' : 'save changes'}
+            {isLoading ? 'Please Wait...' : 'Save changes'}
           </button>
         </div>
       </form>

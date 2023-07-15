@@ -139,7 +139,7 @@ const addSkill = () => {
               className='btn btn-block clear-btn'
               onClick={() => dispatch(clearValues())}
             >
-              clear
+              Clear
             </button>
             <button
               type='submit'
@@ -147,7 +147,7 @@ const addSkill = () => {
               onClick={handleSubmit}
               disabled={isLoading}
             >
-              create skill
+              {isEditing ? 'Update skill' : 'Create skill'}
             </button>
           </div>
         </div>
