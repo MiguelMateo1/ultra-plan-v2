@@ -162,20 +162,15 @@ app.post('/add-skill', verify, (req,res) => {
 app.get('/get-skills', (req,res) => {
     skillsDB.showSkill(req,res,db);
 });
-
-
-// test get user**
-app.get('/:first_name', (req, res) => {
-    const sqlSelect = "SELECT * FROM app_users WHERE email = ? AND first_name = ?";
-    const val = req.params;
-
-    db.query(sqlSelect, [val.first_name, val.email], (err, result) => {
-        if(err) {
-            return res.json({Message: "error error"})
-        }
-        return res.json(result);
-    })
+// delete skills
+app.delete('/skills/:id', verify, (req,res) => {
+    skillsDB.deleteSkill(req,res,db);
 });
+// edit skills
+app.patch('/skills/:id', verify, (req,res) => {
+    skillsDB.editSkill(req,res,db);
+});
+
 
 app.listen(8000, () => {
     console.log('server started')

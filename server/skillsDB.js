@@ -29,5 +29,38 @@ function showSkill (req, res, db) {
 };
 //  show skills End===
 
+//  delete skills 
+function deleteSkill (req, res, db) {
+    const {id} = req.params;
+    
+        const sql = "DELETE FROM user_skills WHERE id = ?";
+        db.query(sql,[id] ,(err, result) => {
+            if(err) {
+                return res.json({erros: err, message: "error"})
+            } else {
+                return res.json(result);
+            }
+        })
+};
+//  delete skills End===
 
-module.exports = {createSkill,showSkill}
+//  edit skills
+function editSkill (req, res, db) {
+    const {id} = req.params;
+    const {skill_name, total_hours, days_per_week, hour_per_day, userId, skill_icon, completed_hours} = req.body;
+    
+    // const sql = "UPDATE user_skills SET first_name = IF(?='', first_name, ?), last_name = IF(?='', last_name, ?), email = IF(?='', email, ?), password = IF(?='', password, ?) WHERE id = ?";
+    const sql = "UPDATE user_skills SET skill_name = ?, total_hours = ?, days_per_week = ?, hour_per_day = ?, completed_hours = ?, icon = ? WHERE id = ?";
+    const values = [skill_name, total_hours, days_per_week, hour_per_day, completed_hours, skill_icon, id];
+        db.query(sql, values ,(err, result) => {
+            if(err) {
+                return res.json({erros: err, message: "error"})
+            } else {
+                return res.json(result);
+            }
+        })
+};
+//  edit skill End===
+
+
+module.exports = {createSkill,showSkill,deleteSkill,editSkill}
