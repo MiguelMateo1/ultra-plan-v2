@@ -1,6 +1,7 @@
 import { FormRow, FormRowSelect } from '../../components';
 import Styles from '../../assets/styles/ProfileFormCSS';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {handleChange,clearValues,createSkill,editSkill} from '../../features/skills/skillsSlice';
 // icons
@@ -11,7 +12,7 @@ import {
   IoTelescopeSharp,IoTerminal,IoDesktop} 
 from "react-icons/io5";
 
-const addSkill = () => {
+const AddSkill = () => {
   const {
     isLoading,
     skill_name,
@@ -28,9 +29,10 @@ const addSkill = () => {
 
   const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
-  // const [isActive, setIsActive] = useState(false);
   const userId = user.id
+  const icons = document.querySelectorAll('.skill-icon');
 
   // icons
   const skillIcons = [<IoBookSharp/>,<IoBarbellSharp/>,<IoBasketballSharp/>,<IoBicycleSharp/>,
@@ -38,9 +40,13 @@ const addSkill = () => {
     <IoReaderSharp/>,<IoSchool/>,<IoTelescopeSharp/>,<IoTerminal/>,<IoDesktop/>
   ];
   
-// hanle from submit
+// handle from submit
   const handleSubmit = (e) => {
     e.preventDefault();
+    // remove active class from all icons
+    icons.forEach(s => {
+      s.classList.remove('active')
+    })
 
     if (!skill_name || !total_hours|| !days_per_week || !hour_per_day || !skill_icon ) {
       toast.error('Please fill out all fields');
@@ -53,6 +59,7 @@ const addSkill = () => {
           skill: { skill_name, total_hours, days_per_week, hour_per_day, skill_icon },
         })
       );
+      navigate('/my-skills')
       return;
     }
     dispatch(createSkill({ skill_name, total_hours, days_per_week, hour_per_day, userId, skill_icon}));
@@ -68,9 +75,8 @@ const addSkill = () => {
   };
 
   const handleSkillIcon = (e,selectedIcon) => {
-    // get all icon and remove active class
-    const siblings = document.querySelectorAll('.skill-icon');
-    siblings.forEach(s => {
+    // remove active class from all icons
+    icons.forEach(s => {
       s.classList.remove('active')
     })
     // sets active class to clicked icon
@@ -156,4 +162,4 @@ const addSkill = () => {
   );
 };
 
-export default addSkill;
+export default AddSkill;
