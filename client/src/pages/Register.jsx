@@ -48,13 +48,6 @@ function Register() {
       dispatch(registerUser(values))
       return
     }
-
-    // axios.post('http://localhost:8000/api/post', values)
-    //   .then((result) => {
-    //     console.log(result)
-    //     navigate(`/${values.first_name}`);
-    //   })
-    //   .catch(err => console.log(err));
   };
 
   useEffect(() => {
@@ -109,7 +102,18 @@ function Register() {
           value={values.password}
           handleChange={handleChange}
         />
-        <button type='submit' className='btn btn-block' disabled={isLoading}>submit</button>
+        <button type='submit' className='btn btn-block' disabled={isLoading}>
+          {member ? 'Login' : 'Register'}
+        </button>
+        <button type='button' className='btn btn-block demo-btn' disabled={isLoading}
+          onClick={() =>
+            dispatch(
+              loginUser({ email: 'test@user.com', password: '12345' })
+            )
+          }
+        >
+          Demo User
+        </button>
         <p>
           {member ? 'Not a member yet?' : 'Already a member?'}
           <button type='button' onClick={toggleMember} className='member-btn'>

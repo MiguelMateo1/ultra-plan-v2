@@ -27,9 +27,17 @@ const Styles = styled.section`
   .btn {
     margin-top: 1rem;
     transition: var(--transition);
+    background-color: var(--primary-4);
+  }
+  .demo-btn {
+    background-color: var(--primary-2);
+    color: var(--primary-4);
   }
   .btn:hover {
     background-color: var(--primary-3);
+  }
+  .demo-btn:hover {
+    color: var(--grey-05);
   }
   .member-btn {
     background: transparent;
