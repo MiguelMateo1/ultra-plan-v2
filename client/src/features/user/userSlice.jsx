@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import fetchUrl from '../../utils/axios';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {addUserToLocalStorage,getUserFromLocalStorage,removeUserFromLocalStorage} from '../../utils/localStorage';
@@ -16,7 +16,7 @@ export const registerUser = createAsyncThunk(
     'user/registerUser',
     async (user, thunkAPI) => {
         try {
-          const response = await axios.post('http://localhost:8000/api/register', user)
+          const response = await fetchUrl.post('/api/register', user)
         //   console.log(response);
           return response.data
         } catch (err) {
@@ -31,8 +31,7 @@ export const loginUser = createAsyncThunk(
     'user/loginUser',
     async (user, thunkAPI) => {
         try {
-          const response = await axios.post('http://localhost:8000/api/login', user)
-        //   console.log(JSON.stringify(user));
+          const response = await fetchUrl.post('/api/login', user)
           return response.data
         } catch (err) {
             console.log(err, 'error loging in');
@@ -46,7 +45,7 @@ export const updateUser = createAsyncThunk(
   'user/updateUser',
   async ( user, thunkAPI) => {
     try {
-      const response = await axios.post('http://localhost:8000/update', user, { 
+      const response = await fetchUrl.post('/update', user, { 
         headers: { authorization: thunkAPI.getState().user.user.token} 
       });
       console.log(response.data)

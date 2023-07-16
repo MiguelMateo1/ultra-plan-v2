@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import axios from 'axios';
+import fetchUrl from '../../utils/axios';
 import { showLoading, hideLoading, getAllSkills } from '../allSkills/allSkillsSlice';
 
 const initialState = {
@@ -17,15 +17,17 @@ const initialState = {
   editSkillId: '',
 };
 
+// token authentication header
+const authHeader = (thunkAPI) => {
+  return {headers: { authorization: thunkAPI.getState().user.user.token}}
+};
 
 // create skill
 export const createSkill = createAsyncThunk(
     'skill/createSkill',
     async (skill, thunkAPI) => {
         try {
-          const response = await axios.post('http://localhost:8000/add-skill', skill, { 
-            headers: { authorization: thunkAPI.getState().user.user.token} 
-          });
+          const response = await fetchUrl.post('/add-skill', skill, authHeader(thunkAPI));
           thunkAPI.dispatch(clearValues());
           return response.data;
         } catch (error) {
@@ -40,10 +42,9 @@ export const deleteSkill = createAsyncThunk(
     async (skillId, thunkAPI) => {
       thunkAPI.dispatch(showLoading());
         try {
-          const response = await axios.delete(`http://localhost:8000/skills/${skillId}`, { 
-            headers: { authorization: thunkAPI.getState().user.user.token} 
-          });
-          thunkAPI.dispatch(getAllSkills());
+          const response = await fetchUrl.delete(`/skills/${skillId}`, authHeader(thunkAPI));
+          const userId = thunkAPI.getState().user.user.id;
+          thunkAPI.dispatch(getAllSkills(userId));
           return response.data
         } catch (err) {
             thunkAPI.dispatch(hideLoading())
@@ -57,9 +58,7 @@ export const editSkill = createAsyncThunk(
   'skill/editSkill',
   async ( {skillId, skill}, thunkAPI) => {
     try {
-      const response = await axios.patch(`http://localhost:8000/skills/${skillId}`, skill, { 
-        headers: { authorization: thunkAPI.getState().user.user.token} 
-      });
+      const response = await fetchUrl.patch(`/skills/${skillId}`, skill, authHeader(thunkAPI));
       thunkAPI.dispatch(clearValues());
       return response.data
     } catch (err) {
@@ -77,6 +76,12 @@ const skillsSlice = createSlice({
       state[name] = value;
     },
     clearValues: () => {
+      // gets and remove active class from icons
+      const icons = document.querySelectorAll('.skill-icon');
+      icons.forEach(s => {
+        s.classList.remove('active')
+      })
+      // sets state to initial state
       return initialState
     },
     setEditSkill: (state, { payload }) => {
@@ -101,7 +106,7 @@ const skillsSlice = createSlice({
         state.isLoading = false;
         toast.error(payload);
       })
-      .addCase(deleteSkill.fulfilled, (state, { payload }) => {
+      .addCase(deleteSkill.fulfilled, () => {
         toast.success('Job deleted');
       })
       .addCase(deleteSkill.rejected, (state, { payload }) => {

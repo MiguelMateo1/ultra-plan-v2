@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import fetchUrl from '../../utils/axios';
 import { toast } from 'react-toastify';
 
 const initialState = {
@@ -13,10 +13,10 @@ const initialState = {
 
 // get user skills
 export const getAllSkills = createAsyncThunk(
-  'sallSkills/getSkills',
+  'allSkills/getAllSkills',
   async (userId, thunkAPI) => {
       try {
-        const response = await axios.get('http://localhost:8000/get-skills', {headers: {userId: userId}});
+        const response = await fetchUrl.get('/get-skills', {headers: {userId: userId}});
         return response.data;
       } catch (error) {
         return console.log(error);
@@ -24,7 +24,19 @@ export const getAllSkills = createAsyncThunk(
   }
 );
 
-export const showStats = createAsyncThunk('allSkills/showStats');
+// showStats
+export const showStats = createAsyncThunk(
+  'allSkills/showStats',
+  async (userId, thunkAPI) => {
+      try {
+        // const response = await fetchUrl.get('/skills/stats', {headers: {userId: userId}});
+        // return response.data;
+        return 'stats returned'
+      } catch (error) {
+        return console.log(error);
+      }
+  }
+);
 
 const allSkillsSlice = createSlice({
   name: 'allSkills',
@@ -59,8 +71,7 @@ const allSkillsSlice = createSlice({
         })
         .addCase(showStats.fulfilled, (state, { payload }) => {
           state.isLoading = false;
-          state.stats = payload.defaultStats;
-          state.monthlyApplications = payload.monthlyApplications;
+          state.stats = payload;
         })
         .addCase(showStats.rejected, (state, { payload }) => {
           state.isLoading = false;
