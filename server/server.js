@@ -170,6 +170,10 @@ app.delete('/skills/:id', verify, (req,res) => {
 app.patch('/skills/:id', verify, (req,res) => {
     skillsDB.editSkill(req,res,db);
 });
+// show stats
+app.get('/skills/stats', (req,res) => {
+    skillsDB.showStats(req,res,db);
+});
 
 
 app.listen(8000, () => {

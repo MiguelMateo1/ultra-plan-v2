@@ -62,5 +62,20 @@ function editSkill (req, res, db) {
 };
 //  edit skill End===
 
+//  get stats 
+function showStats (req, res, db) {
+    const {userid} = req.headers
 
-module.exports = {createSkill,showSkill,deleteSkill,editSkill}
+        const sql = "SELECT * FROM `user_stats` WHERE userId = ?";
+        db.query(sql,[userid] ,(err, result) => {
+            if(err) {
+                return res.json({erros: err, message: "error"})
+            } else {
+                return res.json(result);
+            }
+        })
+};
+//  get stats End===
+
+
+module.exports = {createSkill,showSkill,deleteSkill,editSkill,showStats}
