@@ -1,5 +1,5 @@
 import StatItem from './StatItem';
-import { FaSuitcaseRolling, FaCalendarCheck, FaBug } from 'react-icons/fa';
+import { FaAward, FaCalendarCheck, FaClock } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import Styles from '../assets/styles/StatsContCSS'; 
 
@@ -19,25 +19,25 @@ const sumCompletedHours = (data, key) => {
 
   const defaultStats = [
     {
-      title: 'totla skills',
+      title: 'total skills',
       count: skills.length || 0,
-      icon: <FaSuitcaseRolling />,
+      icon: <FaAward />,
       color: '#e9b949',
-      bcg: '#fcefc7',
+      bcg: '#E7E6B7',
     },
     {
-      title: 'total hours completed',
+      title: 'completed hours',
       count: sumCompletedHours(skills, 'completed_hours'),
       icon: <FaCalendarCheck />,
       color: '#647acb',
       bcg: '#e0e8f9',
     },
     {
-      title: 'total_hours',
+      title: 'committed hours',
       count: sumCompletedHours(skills, 'total_hours'),
-      icon: <FaBug />,
-      color: '#d66a6a',
-      bcg: '#ffeeee',
+      icon: <FaClock />,
+      color: '#41bdc2',
+      bcg: '#c4ebec',
     },
   ];
 
