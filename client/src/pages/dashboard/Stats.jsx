@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
-import { StatsContainer, ChartsContainer } from '../../components';
+import { StatsContainer, ChartsContainer, LogHoursTabs } from '../../components';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllSkills, showStats } from '../../features/allSkills/allSkillsSlice';
-import LogHours from '../../components/LogHours';
 
 const Stats = () => {
   const {isLoading, stats, skills} = useSelector(
@@ -11,7 +10,6 @@ const Stats = () => {
   const { user } = useSelector(
     (store) => store.user
   );
-
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -25,11 +23,11 @@ const Stats = () => {
   }
   return (
     <>
-      <LogHours />
       <StatsContainer />
+      <LogHoursTabs />
       <ChartsContainer />
     </>
   );
 };
 
-  export default Stats;
+export default Stats;
