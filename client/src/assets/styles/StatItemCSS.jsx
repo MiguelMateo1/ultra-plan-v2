@@ -2,8 +2,8 @@ import styled from 'styled-components'
 
 const Styles = styled.article`
   padding: 2rem;
-  background: var(--white);
-  border-radius: var(--borderRadius);
+  ${'' /* background: rgba(255, 255, 255, 0.7); */}
+  border-radius: var(--border-radius);
   border-bottom: 5px solid ${(props) => props.color};
   header {
     display: flex;
@@ -27,7 +27,7 @@ const Styles = styled.article`
     width: 70px;
     height: 60px;
     background: ${(props) => props.bcg};
-    border-radius: var(--borderRadius);
+    border-radius: var(--border-radius);
     display: flex;
     align-items: center;
     justify-content: center;

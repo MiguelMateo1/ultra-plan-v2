@@ -6,9 +6,8 @@ const Styles = styled.nav`
   align-items: center;
   justify-content: center;
   box-shadow: 0 1px 0px 0px rgba(0, 0, 0, 0.1);
-  background: #fff;
   background: var(--grey-05);
-  z-index: 2;
+  background-image: linear-gradient(to right, #ffffff, #f7f8fc, #ecf2f8, #e0ecf4, #d3e7ee);
   .logo {
     display: flex;
     align-items: center;

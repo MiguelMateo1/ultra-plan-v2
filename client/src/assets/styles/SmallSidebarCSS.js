@@ -21,6 +21,7 @@ const Styles = styled.aside`
   .sidebar-container {
     position: fixed;
     margin-left: -100%;
+    ${'' /* width: 90%; */}
     inset: 0;
     background: rgba(0, 0, 0, 0.7);
     display: flex;
