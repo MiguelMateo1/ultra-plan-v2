@@ -174,7 +174,10 @@ app.patch('/skills/:id', verify, (req,res) => {
 app.get('/skills/stats', (req,res) => {
     skillsDB.showStats(req,res,db);
 });
-
+// log hours
+app.patch('/log', (req,res) => {
+    skillsDB.logHours(req,res,db);
+});
 
 app.listen(8000, () => {
     console.log('server started')

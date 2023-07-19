@@ -6,7 +6,7 @@ function createSkill (req, res, db) {
         const sql = "INSERT INTO user_skills(skill_name, total_hours, days_per_week, hour_per_day, userId, icon) VALUES (?,?,?,?,?,?)";
         db.query(sql, [skill_name, total_hours ,days_per_week, hour_per_day, userId, skill_icon], (err, result) => {
             if(err) {
-                return res.json({erros: err, message: "error"})
+                return res.json({error: err, message: "error"})
             } else {
                 return res.json({auth: true, result: result});
             }
@@ -21,7 +21,7 @@ function showSkill (req, res, db) {
         const sql = "SELECT * FROM user_skills WHERE userId = ?";
         db.query(sql,[userid] ,(err, result) => {
             if(err) {
-                return res.json({erros: err, message: "error"})
+                return res.json({error: err, message: "error"})
             } else {
                 return res.json(result);
             }
@@ -36,7 +36,7 @@ function deleteSkill (req, res, db) {
         const sql = "DELETE FROM user_skills WHERE id = ?";
         db.query(sql,[id] ,(err, result) => {
             if(err) {
-                return res.json({erros: err, message: "error"})
+                return res.json({error: err, message: "error"})
             } else {
                 return res.json(result);
             }
@@ -47,14 +47,14 @@ function deleteSkill (req, res, db) {
 //  edit skills
 function editSkill (req, res, db) {
     const {id} = req.params;
-    const {skill_name, total_hours, days_per_week, hour_per_day, userId, skill_icon, completed_hours} = req.body;
+    const {skill_name, total_hours, days_per_week, hour_per_day, userId, skill_icon} = req.body;
     
     // const sql = "UPDATE user_skills SET first_name = IF(?='', first_name, ?), last_name = IF(?='', last_name, ?), email = IF(?='', email, ?), password = IF(?='', password, ?) WHERE id = ?";
-    const sql = "UPDATE user_skills SET skill_name = ?, total_hours = ?, days_per_week = ?, hour_per_day = ?, completed_hours = ?, icon = ? WHERE id = ?";
-    const values = [skill_name, total_hours, days_per_week, hour_per_day, completed_hours, skill_icon, id];
+    const sql = "UPDATE user_skills SET skill_name = ?, total_hours = ?, days_per_week = ?, hour_per_day = ?, completed_hours = completed_hours, icon = ? WHERE id = ?";
+    const values = [skill_name, total_hours, days_per_week, hour_per_day, skill_icon, id];
         db.query(sql, values ,(err, result) => {
             if(err) {
-                return res.json({erros: err, message: "error"})
+                return res.json({error: err, message: "error"})
             } else {
                 return res.json(result);
             }
@@ -69,7 +69,7 @@ function showStats (req, res, db) {
         const sql = "SELECT * FROM `user_stats` WHERE userId = ?";
         db.query(sql,[userid] ,(err, result) => {
             if(err) {
-                return res.json({erros: err, message: "error"})
+                return res.json({error: err, message: "error"})
             } else {
                 return res.json(result);
             }
@@ -77,5 +77,28 @@ function showStats (req, res, db) {
 };
 //  get stats End===
 
+//  log hours
+function logHours(req, res, db) {
+    const { hour, id, month, userId } = req.body;
 
-module.exports = {createSkill,showSkill,deleteSkill,editSkill,showStats}
+    const sql = "UPDATE user_skills SET completed_hours = completed_hours + ? WHERE id = ?";
+    db.query(sql, [hour, id], (err, result) => {
+        if (err) {
+            return res.json({ error: err, message: "error" });
+        } else {
+            const sql2 = `UPDATE user_stats SET ${month} = ${month} + ? WHERE userid = ?`;
+            db.query(sql2, [hour, userId], (err, result2) => {
+                if (err) {
+                    return res.json({ error: err, message: "error" });
+                } else {
+                    return res.json(result2);
+                }
+            });
+        }
+    });
+}
+//  log hours End===
+
+
+
+module.exports = {createSkill,showSkill,deleteSkill,editSkill,showStats, logHours}
