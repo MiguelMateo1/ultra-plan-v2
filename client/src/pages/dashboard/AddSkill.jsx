@@ -5,11 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {handleChange,clearValues,createSkill,editSkill} from '../../features/skills/skillsSlice';
 // icons
+import { PiPianoKeysFill, PiGuitarFill } from "react-icons/pi";
 import { 
   IoBookSharp,IoBarbellSharp,IoBasketballSharp,
   IoBicycleSharp,IoEasel,IoFlaskSharp,IoHeadsetSharp,
   IoHardwareChipSharp,IoPencilSharp,IoReaderSharp,IoSchool,
-  IoTelescopeSharp,IoTerminal,IoDesktop} 
+  IoTelescopeSharp,IoTerminal,IoDesktop,IoMusicalNotes,IoBrush } 
 from "react-icons/io5";
 
 const AddSkill = () => {
@@ -35,9 +36,9 @@ const AddSkill = () => {
   const icons = document.querySelectorAll('.skill-icon');
 
   // icons
-  const skillIcons = [<IoBookSharp/>,<IoBarbellSharp/>,<IoBasketballSharp/>,<IoBicycleSharp/>,
-    <IoEasel/>,<IoFlaskSharp/>,<IoHeadsetSharp/>,<IoHardwareChipSharp/>, <IoPencilSharp/>,
-    <IoReaderSharp/>,<IoSchool/>,<IoTelescopeSharp/>,<IoTerminal/>,<IoDesktop/>
+  const skillIcons = [<IoBookSharp/>,<IoBarbellSharp/>,<PiPianoKeysFill />,<PiGuitarFill />,<IoBasketballSharp/>,<IoBicycleSharp/>,
+    <IoEasel/>,<IoFlaskSharp/>,<IoHeadsetSharp/>,<IoHardwareChipSharp/>,<IoBrush />, <IoPencilSharp/>,
+    <IoReaderSharp/>,<IoSchool/>,<IoTelescopeSharp/>,<IoTerminal/>,<IoDesktop/>,<IoMusicalNotes/>
   ];
   
 // handle from submit
