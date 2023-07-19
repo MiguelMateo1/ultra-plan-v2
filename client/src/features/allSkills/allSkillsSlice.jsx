@@ -9,8 +9,6 @@ const initialState = {
   stats: {},
 };
 
-// icon and copleted hours in database
-
 // get user skills
 export const getAllSkills = createAsyncThunk(
   'allSkills/getAllSkills',
@@ -29,9 +27,23 @@ export const showStats = createAsyncThunk(
   'allSkills/showStats',
   async (userId, thunkAPI) => {
       try {
-        // const response = await fetchUrl.get('/skills/stats', {headers: {userId: userId}});
-        // return response.data;
-        return 'stats returned'
+        const response = await fetchUrl.get('/skills/stats', {headers: {userId: userId}});
+        return response.data;
+      } catch (error) {
+        return console.log(error);
+      }
+  }
+);
+
+// log hours
+export const logHours = createAsyncThunk(
+  'allSkills/logHours',
+  async ({id, userId, month, hour}, thunkAPI) => {
+      try {
+        const response = await fetchUrl.patch(`/log`, {id, userId, month, hour});
+        thunkAPI.dispatch(showStats(userId));
+        thunkAPI.dispatch(getAllSkills(userId));
+        return response
       } catch (error) {
         return console.log(error);
       }
@@ -55,7 +67,7 @@ const allSkillsSlice = createSlice({
     extraReducers: (builder) => {
       builder
         .addCase(getAllSkills.pending, (state) => {
-          state.isLoading = true;
+          // state.isLoading = true;
         })
         .addCase(getAllSkills.fulfilled, (state, { payload }) => {
           state.isLoading = false;
@@ -67,7 +79,7 @@ const allSkillsSlice = createSlice({
           toast.error(payload);
         })
         .addCase(showStats.pending, (state) => {
-          state.isLoading = true;
+          // state.isLoading = true;
         })
         .addCase(showStats.fulfilled, (state, { payload }) => {
           state.isLoading = false;
