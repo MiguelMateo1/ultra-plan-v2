@@ -72,16 +72,17 @@ const Styles = styled.article`
     width: 100px;
     height: 30px;
     margin-top: 1rem;
+    padding: 3px 5px;
     background: #e0e8f9;
     color: #647acb;
   }
   .overdue {
     color: #d66a6a;
-    background: #ffeeee;
+    background: #7EBC66;
   }
   .completed {
-    color: #4FFBDF;
-    background: #00C9A7;
+    color: #fff;
+    background: #51B048;
   }
   footer {
     margin-top: 1rem;
@@ -98,10 +99,13 @@ const Styles = styled.article`
     color: #0f5132;
     background: #d1e7dd;
     margin-right: 0.5rem;
+    border-radius: 4px;
+    padding: 3px 6px 8px 6px;
+    text-transform: uppercase;
   }
   .delete-btn {
     color: #842029;
-    background: #f8d7da;
+    ${'' /* background: #f8d7da; */}
   }
 `;
 

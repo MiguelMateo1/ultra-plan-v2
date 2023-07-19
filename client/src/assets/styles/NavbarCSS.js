@@ -47,8 +47,8 @@ const Styles = styled.nav`
     gap: 0 5px;
     position: relative;
     text-transform: capitalize;
-    border-radius: 15px;
-    background: var(--secondary-6);
+    background: var(--secondary-5);
+    border: none;
   }
 
   .dropdown {
