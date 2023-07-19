@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllSkills, showStats } from '../../features/allSkills/allSkillsSlice';
 
 const Stats = () => {
-  const {isLoading, stats, skills} = useSelector(
+  const {isLoading} = useSelector(
     (store) => store.allSkills
   );
   const { user } = useSelector(
@@ -18,9 +18,9 @@ const Stats = () => {
   }, []);
 
   if (isLoading) {
-    return <h2>Loading...</h2>
-
+    return
   }
+
   return (
     <>
       <StatsContainer />

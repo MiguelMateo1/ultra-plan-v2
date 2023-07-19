@@ -7,7 +7,7 @@ const Styles = styled.section`
     background: transparent;
     border-color: transparent;
     text-transform: capitalize;
-    color: var(--primary-5);
+    color: var(--primary-3);
     font-size: 1.25rem;
     cursor: pointer;
   }

@@ -17,7 +17,7 @@ padding: 1rem;
     border-radius: var(--border-radius);
     width: 90%;
     margin: 0 auto;
-    background-color: var(--grey-05);
+    background-color: #fff;
     display: flex;
     justify-content: center;
     margin-bottom: 2rem;
