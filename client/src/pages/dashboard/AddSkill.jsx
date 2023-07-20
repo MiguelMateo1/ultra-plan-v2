@@ -48,11 +48,12 @@ const AddSkill = () => {
     icons.forEach(s => {
       s.classList.remove('active')
     })
-
+    // checks that all values are provided
     if (!skill_name || !total_hours|| !days_per_week || !hour_per_day || !skill_icon ) {
       toast.error('Please fill out all fields');
       return;
     }
+    // is is editing will dispatch editSkill fetch and navigate back to my skills
     if (isEditing) {
       dispatch(
         editSkill({
@@ -63,12 +64,19 @@ const AddSkill = () => {
       navigate('/my-skills')
       return;
     }
+
+    // validate total hours input
+    if (total_hours < 10  || total_hours > 6000) {
+      toast.warning('Please fill "Total Hours" field correctly');
+      return;
+    }
+    // dispatch create skill
     dispatch(createSkill({ skill_name, total_hours, days_per_week, hour_per_day, userId, skill_icon}));
   };
   // hanle from submit END=====
 
 
-  // handle inpust + icon
+  // handle inputs + icon
   const handleSkillInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -101,14 +109,19 @@ const AddSkill = () => {
             name='skill_name'
             value={skill_name}
             handleChange={handleSkillInput}
+            placeholder='ex.. Spanish, Piano, Astronomy'
           />
           {/* total hours */}
           <FormRow
-            type='text'
+            type='number'
             name='total_hours'
             labelText='total hours to commit'
             value={total_hours}
             handleChange={handleSkillInput}
+            placeholder='ex.. 200, 700 (max-6000)'
+            min='10'
+            max='6000'
+            step='10'
           />
           {/* days per week*/}
           <FormRowSelect

@@ -1,5 +1,6 @@
 
-const FormRow = ({ type, name, value, handleChange, labelText }) => {
+const FormRow = ({ type, name, value, handleChange,
+   labelText, placeholder, min, max, step }) => {
     return (
       <div className='form-row'>
         <label htmlFor={name} className='form-label'>
@@ -11,7 +12,11 @@ const FormRow = ({ type, name, value, handleChange, labelText }) => {
           name={name}
           value={value}
           onChange={handleChange}
+          placeholder={placeholder}
           className='form-input'
+          min={min}
+          max={max}
+          step={step}
         />
       </div>
     );
