@@ -1,10 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import fetchUrl from '../../utils/axios';
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {addUserToLocalStorage,getUserFromLocalStorage,removeUserFromLocalStorage} from '../../utils/localStorage';
 
-// const navigate = useNavigate()
 const initialState = {
     isLoading: false,
     sidebarOpen: false,
@@ -14,10 +12,9 @@ const initialState = {
 // register user
 export const registerUser = createAsyncThunk(
     'user/registerUser',
-    async (user, thunkAPI) => {
+    async (user) => {
         try {
           const response = await fetchUrl.post('/api/register', user)
-        //   console.log(response);
           return response.data
         } catch (err) {
             console.error('Error occurred:', err.response);
@@ -29,13 +26,13 @@ export const registerUser = createAsyncThunk(
 // login user
 export const loginUser = createAsyncThunk(
     'user/loginUser',
-    async (user, thunkAPI) => {
+    async (user) => {
         try {
           const response = await fetchUrl.post('/api/login', user)
           return response.data
         } catch (err) {
             console.log(err, 'error loging in');
-            thunkAPI.rejectWithValue(err.response);
+            return toast.error('error loging in, try again later');
         }
     }
 );
@@ -48,7 +45,6 @@ export const updateUser = createAsyncThunk(
       const response = await fetchUrl.post('/update', user, { 
         headers: { authorization: thunkAPI.getState().user.user.token} 
       });
-      console.log(response.data)
       if (response.data.auth == false) {
         thunkAPI.dispatch(userLogout());
         return thunkAPI.rejectWithValue('Unauthorized, Logging Out..');
@@ -56,7 +52,7 @@ export const updateUser = createAsyncThunk(
       return response.data
     } catch (err) {
         console.log(err)
-      return thunkAPI.rejectWithValue(err.response.data.message);
+      return toast.error(err.message);
     }
   }
 );
@@ -72,7 +68,6 @@ const userSlice = createSlice({
         state.user = null;
         state.sidebarOpen = false;
         removeUserFromLocalStorage();
-        console.log(payload)
         if (payload) {
           toast.success(payload);
         }
@@ -129,7 +124,8 @@ const userSlice = createSlice({
           .addCase(updateUser.fulfilled, (state, action) => {
             state.isLoading = false;
             if (action.payload == 'no token' || action.payload == 'error') {
-              console.log('no token')
+                toast.warning('Unauthorized..');
+                console.log('no token')
               return;
             }
             if (action.payload.message == 'Request failed with status code 500') {

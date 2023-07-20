@@ -63,7 +63,6 @@ p {
   font-size: 3rem;
   margin-left: 75%;
   color: var(--secondary-2);
-  ${'' /* margin-bottom: 10px; */}
 }
 
 .footer-container {
@@ -138,15 +137,16 @@ p {
 }
 
 .footer-btn {
+  border: 1px solid var(--grey-3);
   background-color: var(--grey-2);
   color: var(--primary-2);
-  border-radius: 50px;
+  border-radius: 450px;
   grid-row: 1/2;
   grid-column: 2/3;
   margin-right: 1rem;
-  padding: 2px 7px;
+  padding: 4px 10px;
   transition: 0.2s ease-in-out all;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
 }
 
 .footer-btn:hover {

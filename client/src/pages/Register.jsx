@@ -1,6 +1,6 @@
 import Styles from '../assets/styles/RegisterCSS';
 import { useState, useEffect } from 'react';
-import { Logo, FormRow } from '../components';
+import { Logo, FormRow, Loader } from '../components';
 import { toast } from 'react-toastify';
 // axios
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,11 +50,12 @@ function Register() {
     }
   };
 
+  // if user is logine/register or is already login(localState) naviget to home/dashboard
   useEffect(() => {
     if (user) {
       setTimeout(() => {
         navigate('/');
-      }, 1000);
+      }, 500);
     }
   }, [user]);
 
@@ -65,6 +66,7 @@ function Register() {
 
   return (
     <Styles>
+      {isLoading && <Loader />}
       <form className='form' onSubmit={onSubmit}>
         <Logo />
         <h3>{member ? 'Login' : 'Register'}</h3>

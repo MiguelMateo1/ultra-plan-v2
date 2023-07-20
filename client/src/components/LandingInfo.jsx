@@ -51,9 +51,9 @@ const LandingInfo = () => {
                 <FaInstagram className='social-icon'/><FaLinkedinIn className='social-icon'/>
                 <FaTwitter className='social-icon' />
             </h5>
-            <button className='btn footer-btn'>
+            <a className='footer-btn' href="#">
                 <FaAngleUp className='footer-btn-icon'/>
-            </button>
+            </a>
 
         </div>
         <div className='footer-img'>

@@ -16,6 +16,7 @@ padding: 1rem;
   .box {
     border-radius: var(--border-radius);
     width: 90%;
+    max-width: 340px;
     margin: 0 auto;
     background-color: #fff;
     display: flex;
@@ -35,6 +36,9 @@ padding: 1rem;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: min-content;
     gap: 0 1rem;
+    .box {
+      max-width: 540px;
+    }
 }
 `
 export default Styles

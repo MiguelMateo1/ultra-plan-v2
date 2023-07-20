@@ -68,7 +68,7 @@ const Styles = styled.main`
       color: var(--secondary-3);
     }
   }
-  p {
+  .intro-text {
     color: var(--grey-1);
   }
   .main-img {
@@ -80,7 +80,8 @@ const Styles = styled.main`
   .btn {
     color:  var(--secondary-2);
     background-color: var(--primary-6);
-    padding: 8px 13px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
   }
   .btn:hover {
     background-color: var(--primary-4);

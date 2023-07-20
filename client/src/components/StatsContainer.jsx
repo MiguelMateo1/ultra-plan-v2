@@ -4,18 +4,16 @@ import { useSelector } from 'react-redux';
 import Styles from '../assets/styles/StatsContCSS'; 
 
 const StatsContainer = () => {
-  const { stats, skills } = useSelector((store) => store.allSkills);
+  const { skills } = useSelector((store) => store.allSkills);
 
-// Function to calculate the sum of key
+// Function to calculate the sum of passed in key
 const sumCompletedHours = (data, key) => {
   let totalHours = 0;
-
   for (const item of data) {
     totalHours += item[key];
   }
   return totalHours;
 }
-
 
   const defaultStats = [
     {

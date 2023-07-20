@@ -12,8 +12,9 @@ import StatsContainer from './StatsContainer';
 import StatItem from './StatItem';
 import LogHoursTabs from './LogHoursTabs';
 import CalendarArea from './Calendar';
+import Loader from './Loader';
 
 export {
-  Logo, LandingInfo, FormRow, Navbar, SmallSidebar, BigSidebar, FormRowSelect,
+  Logo, LandingInfo, FormRow, Navbar, SmallSidebar, BigSidebar, FormRowSelect, Loader,
   SkillsContainer, Skill, StatsContainer, ChartsContainer, StatItem, LogHoursTabs, CalendarArea
 };

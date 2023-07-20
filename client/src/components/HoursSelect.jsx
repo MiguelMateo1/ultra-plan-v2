@@ -40,11 +40,11 @@ const HoursSelect = ({ day, hour, setHour, btnClick, name }) => {
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
-      width: 360,
+      width: 345,
       bgcolor: 'background.paper',
       border: '2px solid #000',
       boxShadow: 24,
-      p: 4,
+      p: 3,
   };
   // modal END==
 
@@ -67,7 +67,7 @@ const HoursSelect = ({ day, hour, setHour, btnClick, name }) => {
         >
           <Box sx={modalStyle}>
             <h4>Log {hour > 1 ? `${hour} hours` : `${hour} hour`} to {name}?</h4>
-              <Button type='button' onClick={handleBtnClick}>
+              <Button onClick={handleBtnClick}  sx={{ mt: 1.3,  border: '1px solid lightblue'}}>
                 confirm
               </Button>
           </Box>

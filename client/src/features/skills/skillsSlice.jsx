@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import fetchUrl from '../../utils/axios';
 import { showLoading, hideLoading, getAllSkills } from '../allSkills/allSkillsSlice';
+import { userLogout } from '../user/userSlice';
 
 const initialState = {
   isLoading: false,
@@ -10,7 +11,7 @@ const initialState = {
   days_per_week: 1,
   days_per_week_options: [1,2,3,4,5,6,7],
   hour_per_day: 1,
-  hour_per_day_options: [1, 2, 3, 4, 5, 6],
+  hour_per_day_options: [.5, 1, 1.5, 2, 3, 4, 5, 6, 7, 8],
   skill_icon: '',
   completed_hours: 0,
   isEditing: false,
@@ -44,6 +45,11 @@ export const deleteSkill = createAsyncThunk(
         try {
           const response = await fetchUrl.delete(`/skills/${skillId}`, authHeader(thunkAPI));
           const userId = thunkAPI.getState().user.user.id;
+          // if token expired/not match
+          if (response.data.auth == false) {
+            thunkAPI.dispatch(userLogout());
+            return thunkAPI.rejectWithValue('Unauthorized, Logging Out..');
+          }
           thunkAPI.dispatch(getAllSkills(userId));
           return response.data
         } catch (err) {
@@ -59,6 +65,11 @@ export const editSkill = createAsyncThunk(
   async ( {skillId, skill}, thunkAPI) => {
     try {
       const response = await fetchUrl.patch(`/skills/${skillId}`, skill, authHeader(thunkAPI));
+      // if token expired/not match
+      if (response.data.auth == false) {
+        thunkAPI.dispatch(userLogout());
+        return thunkAPI.rejectWithValue('Unauthorized, Logging Out..');
+      }
       thunkAPI.dispatch(clearValues());
       return response.data
     } catch (err) {

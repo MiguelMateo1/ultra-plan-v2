@@ -32,7 +32,7 @@ const LandingPage = () => {
           <h1>
             Skill <span>tracking</span> app
           </h1>
-          <p>
+          <p className='intro-text'>
             Introducing UltraPlan, a web app designed to help users start and track
             their progress in learning new skills or subjects. Providing an
             intuitive platform for individuals to create and monitor
