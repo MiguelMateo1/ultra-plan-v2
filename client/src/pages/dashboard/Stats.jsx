@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { StatsContainer, ChartsContainer, LogHoursTabs } from '../../components';
+import { StatsContainer, ChartsContainer, LogHoursTabs, Loader } from '../../components';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllSkills, showStats } from '../../features/allSkills/allSkillsSlice';
 
@@ -18,7 +18,7 @@ const Stats = () => {
   }, []);
 
   if (isLoading) {
-    return
+    return <Loader/>
   }
 
   return (
