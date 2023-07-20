@@ -12,7 +12,7 @@ const initialState = {
 // get user skills
 export const getAllSkills = createAsyncThunk(
   'allSkills/getAllSkills',
-  async (userId, thunkAPI) => {
+  async (userId) => {
       try {
         const response = await fetchUrl.get('/get-skills', {headers: {userId: userId}});
         return response.data;
@@ -25,12 +25,13 @@ export const getAllSkills = createAsyncThunk(
 // showStats
 export const showStats = createAsyncThunk(
   'allSkills/showStats',
-  async (userId, thunkAPI) => {
+  async (userId) => {
       try {
         const response = await fetchUrl.get('/skills/stats', {headers: {userId: userId}});
         return response.data;
       } catch (error) {
-        return console.log(error);
+        console.log(error);
+        return toast.error(error.message);
       }
   }
 );
@@ -44,6 +45,20 @@ export const logHours = createAsyncThunk(
         thunkAPI.dispatch(showStats(userId));
         thunkAPI.dispatch(getAllSkills(userId));
         return response
+      } catch (error) {
+        console.log(error);
+        return toast.error(error.message);
+      }
+  }
+);
+
+// reset chart hours
+export const resetChart = createAsyncThunk('allSkills/resetChart',
+  async (userId, thunkAPI) => {
+      try {
+        const response = await fetchUrl.patch(`/reset`, {userId});
+        thunkAPI.dispatch(showStats(userId));
+        return response.data
       } catch (error) {
         return console.log(error);
       }

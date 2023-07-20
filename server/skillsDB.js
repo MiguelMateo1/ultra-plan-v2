@@ -99,6 +99,26 @@ function logHours(req, res, db) {
 }
 //  log hours End===
 
+//  reset chart
+function resetChart(req, res, db) {
+    const { userId } = req.body;
+    console.log(userId)
+    if (!userId) {
+        return res.status(400).json({ message: "userId is missing in the request body." });
+      }
+
+      const sql = `UPDATE user_stats SET jan=0, feb=0, mar=0, apr=0, may=0, jun=0, jul=0,
+        aug=0, sep=0, oct=0, nov=0, \`dec\`=0 WHERE userid = ?`;
+    db.query(sql, [userId], (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message, message: "Error resetting chart hours" });
+        } else {
+            return res.json(result);
+        }
+    });
+}
+//  reset chart End===
 
 
-module.exports = {createSkill,showSkill,deleteSkill,editSkill,showStats, logHours}
+
+module.exports = {createSkill,showSkill,deleteSkill,editSkill,showStats, logHours, resetChart}

@@ -178,6 +178,10 @@ app.get('/skills/stats', (req,res) => {
 app.patch('/log', (req,res) => {
     skillsDB.logHours(req,res,db);
 });
+// reset chart
+app.patch('/reset', (req,res) => {
+    skillsDB.resetChart(req,res,db);
+});
 
 app.listen(8000, () => {
     console.log('server started')
