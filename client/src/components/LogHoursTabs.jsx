@@ -23,9 +23,6 @@ const LogHoursTabs = () => {
     const { skills } = useSelector((store) => store.allSkills);
     const { user } = useSelector((store) => store.user);
     const dispatch = useDispatch();
-    // if (skills.id == undefined ) {
-    //   return <h3>Add a new skill to start moniroting your progress</h3>
-    // }
 
     // selecte date on calendar
     const [date, onChange] = useState(new Date());
