@@ -8,7 +8,7 @@ const Styles = styled.section`
     background: transparent;
     border-color: transparent;
     text-transform: capitalize;
-    color: var(--primary-3);
+    color: var(--secondary-5);
     font-size: 1.25rem;
     cursor: pointer;
   }
@@ -20,6 +20,24 @@ const Styles = styled.section`
   h4 {
     text-align: center;
     margin-bottom: 0.75rem;
+    display: block;
+  }
+  .year-container {
+    position: absolute;
+    bottom: 30px;
+    left: 50px;
+  }
+  h6 {
+    margin: 0;
+    margin-right: 5px;
+    text-decoration: underline; 
+    cursor: pointer;
+    display: inline-block;
+    transition: var(--transition);
+  }
+  h6.active {
+    font-size: .9rem;
+    color: var(--primary-2);
   }
   .btn {
     color: darkred;

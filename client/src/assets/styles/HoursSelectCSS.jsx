@@ -13,6 +13,11 @@ const Styles = styled.section`
     background-color: var(--primary-3);
     text-transform: capitalize;
   }
+  .btn:disabled {
+    cursor: not-allowed;
+    border: none;
+    background-color: var(--grey-4);
+  }
 `
 
 export default Styles

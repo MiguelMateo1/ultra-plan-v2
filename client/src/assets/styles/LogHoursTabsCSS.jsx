@@ -26,6 +26,12 @@ padding: 1rem;
   .log-container {
 
   }
+  h3 {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1.3rem;
+    margin-top: .5rem;
+  }
   h4 {
     text-align: center;
     padding-bottom: 1rem;
