@@ -8,14 +8,24 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-const BarChartComponent = ({ data }) => {
+const BarChartComponent = ({ data, year }) => {
+  
+    // get stats for selected year to pass to the charts
+    function getObjectByYear(stats, targetYear) {
+      const foundObject = stats.find(item => {
+        return item.year == targetYear;
+      });
+      return foundObject;
+    }
+
   if (data.length > 0) {
-    
-    //  get data and create object array format to pass into the chart
+    const selectYearData = getObjectByYear(data,year);
+
     const months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+    //  get data and create object array format to pass into the chart
     const resultArray = months.map((month) => ({
       month: month,
-      hours: data[0][month]
+      hours: selectYearData[month]
     }));
     
   return (

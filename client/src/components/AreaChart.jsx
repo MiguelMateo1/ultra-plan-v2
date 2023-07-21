@@ -8,19 +8,29 @@ import {
   Tooltip,
 } from 'recharts';
 
-const AreaChartComponent = ({ data }) => {
+const AreaChartComponent = ({ data, year }) => {
+
+    // get stats for selected year to pass to the charts
+    function getObjectByYear(stats, targetYear) {
+      const foundObject = stats.find(item => {
+        return item.year == targetYear;
+      });
+      return foundObject;
+    }
+
   if (data.length > 0) {
-    
-    //  get data and create object array format to pass into the chart
+    const selectYearData = getObjectByYear(data,year);
+
     const months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+    //  gets data and create object array format to pass into the chart
     const resultArray = months.map((month) => ({
       month: month,
-      hours: data[0][month]
+      hours: selectYearData[month]
     }));
     
   return (
-    <ResponsiveContainer width='100%' height={300}>
-      <AreaChart data={resultArray} margin={{ top: 50 }}>
+    <ResponsiveContainer width='100%' height={300} >
+      <AreaChart data={resultArray} margin={{ top: 50, left: -20}}>
         <CartesianGrid strokeDasharray='3 3' />
         <XAxis dataKey='month' />
         <YAxis allowDecimals={false} />
@@ -31,4 +41,5 @@ const AreaChartComponent = ({ data }) => {
   );
   }
 };
+
 export default AreaChartComponent;
