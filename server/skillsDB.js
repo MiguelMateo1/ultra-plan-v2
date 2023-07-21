@@ -47,9 +47,8 @@ function deleteSkill (req, res, db) {
 //  edit skills
 function editSkill (req, res, db) {
     const {id} = req.params;
-    const {skill_name, total_hours, days_per_week, hour_per_day, userId, skill_icon} = req.body;
+    const {skill_name, total_hours, days_per_week, hour_per_day, skill_icon} = req.body;
     
-    // const sql = "UPDATE user_skills SET first_name = IF(?='', first_name, ?), last_name = IF(?='', last_name, ?), email = IF(?='', email, ?), password = IF(?='', password, ?) WHERE id = ?";
     const sql = "UPDATE user_skills SET skill_name = ?, total_hours = ?, days_per_week = ?, hour_per_day = ?, completed_hours = completed_hours, icon = ? WHERE id = ?";
     const values = [skill_name, total_hours, days_per_week, hour_per_day, skill_icon, id];
         db.query(sql, values ,(err, result) => {
@@ -77,17 +76,45 @@ function showStats (req, res, db) {
 };
 //  get stats End===
 
-//  log hours
+//  insert or created user_stats data and logs/update skill hours
 function logHours(req, res, db) {
-    const { hour, id, month, userId } = req.body;
+    const { hour, id, month, userId, year } = req.body;
 
+    // Check if data exists for the selected year and userId
+    const checkSql = "SELECT * FROM user_stats WHERE year = ? AND userid = ?";
+    db.query(checkSql, [year, userId], (err, resultCheck) => {
+        if (err) {
+            return res.json({ error: err, message: "error" });
+        } else {
+            if (resultCheck.length === 0) {
+                // No data found for the current year and userId, so insert a new record
+                const insertSql = `INSERT INTO user_stats (year, userid, ${month}) VALUES (?, ?, ?)`;
+                db.query(insertSql, [year, userId, hour], (err, resultInsert) => {
+                    if (err) {
+                        return res.json({ error: err, message: "error updating user stats" });
+                    } else {
+                        // Record inserted successfully, now update user_skills and user_stats
+                        updateSkillsAndStats(hour, id, month, userId, year, db, res);
+                    }
+                });
+            } else {
+                // Data exists, proceed with the update
+                updateSkillsAndStats(hour, id, month, userId, year, db, res);
+            }
+        }
+    });
+}
+
+function updateSkillsAndStats(hour, id, month, userId, year, db, res) {
+    // logs/add hours to the selected skill
     const sql = "UPDATE user_skills SET completed_hours = completed_hours + ? WHERE id = ?";
     db.query(sql, [hour, id], (err, result) => {
         if (err) {
             return res.json({ error: err, message: "error" });
         } else {
-            const sql2 = `UPDATE user_stats SET ${month} = ${month} + ? WHERE userid = ?`;
-            db.query(sql2, [hour, userId], (err, result2) => {
+            // updates stats to display in chart and stats area
+            const sql2 = `UPDATE user_stats SET ${month} = ${month} + ? WHERE userid = ? AND year = ?`;
+            db.query(sql2, [hour, userId, year], (err, result2) => {
                 if (err) {
                     return res.json({ error: err, message: "error" });
                 } else {
@@ -97,12 +124,12 @@ function logHours(req, res, db) {
         }
     });
 }
-//  log hours End===
+// insert or created user_stats data and logs/update skill hour log END===
 
 //  reset chart
 function resetChart(req, res, db) {
     const { userId } = req.body;
-    console.log(userId)
+
     if (!userId) {
         return res.status(400).json({ message: "userId is missing in the request body." });
       }

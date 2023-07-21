@@ -64,7 +64,6 @@ const verify = (req, res, next) => {
             if (err) {
                 res.json({err: err,auth: false, message: 'failed to authenticate'});
             } else {
-                // req.user = user.id;
                 next();
             }
         })
@@ -116,6 +115,10 @@ app.post('/update', verify , (req, res) => {
 // register user 
 app.post('/api/register', (req, res) => {
     const {first_name, last_name, email, password} = req.body;
+      // Perform input validation
+    if (!first_name || !last_name || !email || !password) {
+        return res.status(400).json({ message: 'All fields are required.' });
+    }
 
     // checks if user exist
     const checkSql = "SELECT * FROM app_users WHERE email = ?";
@@ -132,7 +135,7 @@ app.post('/api/register', (req, res) => {
                     return res.json({message: "error"})
                 } else {
                     // user created 
-                    // get new user data
+                    // get the new user data
                     const sql = "SELECT * FROM app_users WHERE email = ? AND password = ?";
                     db.query(sql, [email,password], (err, result) => {
 
@@ -145,10 +148,21 @@ app.post('/api/register', (req, res) => {
                         // deletes password and add token to results before returning the date
                         delete result[0].password
                         result[0].token = token
+                        // creats data table to new user
+                        const year = new Date().getFullYear();
+                        const userId = result[0].id;
+                        console.log(userId)
+                        const insertSql = `INSERT INTO user_stats (year, userid) VALUES (?, ?)`;
+                        db.query(insertSql, [year, userId], (err, resultInsert) => {
+                            if (err) {
+                                return res.json({ error: err, message: "error creating user stats" });
+                            }
+                        })
                         return res.json({auth: true, result: result});
                     })
                 }
             })
+            // register new user END ===
         }
     })
 });
