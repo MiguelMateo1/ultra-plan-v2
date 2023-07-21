@@ -9,7 +9,6 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 
 const HoursSelect = ({ day, hour, setHour, btnClick, name }) => {
-
 //   gets select hour
   const handleClick = (e) => {
     if (e.target.getAttribute('aria-label')) {
@@ -56,7 +55,7 @@ const HoursSelect = ({ day, hour, setHour, btnClick, name }) => {
             : <Pagination count={9} onClick={handleClick} hidePrevButton hideNextButton/>
             }
         </Stack>
-        <button className='btn' onClick={handleOpen}>
+        <button className='btn' onClick={handleOpen} disabled={name == null ? true : false}>
             {hour ? `Log ${hour > 1 ? `${hour} hours` : `${hour} hour`} on ${day}` : 'select date and hours to log'}
         </button>
         <Modal
