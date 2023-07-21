@@ -23,14 +23,19 @@ const LogHoursTabs = () => {
     const { skills } = useSelector((store) => store.allSkills);
     const { user } = useSelector((store) => store.user);
     const dispatch = useDispatch();
+    // if (skills.id == undefined ) {
+    //   return <h3>Add a new skill to start moniroting your progress</h3>
+    // }
 
     // selecte date on calendar
     const [date, onChange] = useState(new Date());
     const month = format(date, 'MMM');
+    const year = format(date, 'yyyy');
     const btnDate = (format(date, 'MM/dd/yy'))
 
     // selected skill id/ gets selected id func
-    const [id, setValue] = useState(skills[0].id);
+    const initialId = (skills && skills.length > 0) ? skills[0].id : null;
+    const [id, setValue] = useState(initialId);
     const handleSkillChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -39,14 +44,15 @@ const LogHoursTabs = () => {
     const [hour, setHour] = useState('');
     // skill index/name
     let index = skills.findIndex(i => i.id == id);
-    let skillName = skills[index].skill_name;
+    const skillName = index != -1 ? skills[index]?.skill_name : null;
+    // let skillName = (skills && skills.length > 0) ? skills[index].skill_name : null;
 
     function handleClick () {
         if (!hour) {
             toast.warning('no hours logged, select hours');
             return
         }
-        dispatch(logHours({ id, userId: user.id, month, hour }));
+        dispatch(logHours({ id, userId: user.id, month, hour, year }));
 
         // let index = skills.findIndex(i => i.id == id);
         toast.success(`Hours logged for ${skillName}!!`);
@@ -64,7 +70,7 @@ const LogHoursTabs = () => {
             <h4>log hours</h4>
             <Box className='box' sx={{ maxWidth: { xs: 365, sm: 880 }}}>
                 <Tabs
-                    value={id}
+                    value={id ? id : 0}
                     onChange={handleSkillChange}
                     textColor="primary"
                     variant="scrollable"
@@ -72,10 +78,12 @@ const LogHoursTabs = () => {
                     allowScrollButtonsMobile
                     aria-label="scrollable force tabs"
                     >
-                    {skills.map((skill,index) => (
+                    {skillName ? skills.map((skill,index) => (
                     <Tab key={index} label={skill.skill_name} value={skill.id}
                         icon={skillIcons[skill.icon]} iconPosition="top" />
-                ))}
+                        ))
+                        : <h3>no skills started</h3>
+                    }
                 </Tabs>
             </Box>
             <HoursSelect day={btnDate} hour={hour} setHour={setHour} btnClick={handleClick} name={skillName} />

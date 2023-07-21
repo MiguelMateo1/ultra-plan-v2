@@ -39,9 +39,9 @@ export const showStats = createAsyncThunk(
 // log hours
 export const logHours = createAsyncThunk(
   'allSkills/logHours',
-  async ({id, userId, month, hour}, thunkAPI) => {
+  async ({id, userId, month, hour, year}, thunkAPI) => {
       try {
-        const response = await fetchUrl.patch(`/log`, {id, userId, month, hour});
+        const response = await fetchUrl.patch(`/log`, {id, userId, month, hour, year});
         thunkAPI.dispatch(showStats(userId));
         thunkAPI.dispatch(getAllSkills(userId));
         return response

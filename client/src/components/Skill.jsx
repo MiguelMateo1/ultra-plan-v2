@@ -115,7 +115,9 @@ const Skill = ({
                 >
                   <Box sx={modalStyle}>
                     <h4>confirm delete skill?</h4>
-                      <Button type='button' onClick={() => dispatch(deleteSkill(id))}>
+                      <Button sx={{ mt: 1, color: 'black',backgroundColor: 'red' }} 
+                        onClick={() => dispatch(deleteSkill(id))}
+                        >
                         Delete
                       </Button>
                   </Box>
