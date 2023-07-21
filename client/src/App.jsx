@@ -26,7 +26,7 @@ function App() {
         <Route path="/*" element={<Error />} />
       </Routes>
       {/* toast use for popup alerts */}
-      <ToastContainer position="top-center" autoClose={3000} />
+      <ToastContainer position="top-center" autoClose={4000} hideProgressBar={true} pauseOnFocusLoss={false} />
     </BrowserRouter>
   )
 }
