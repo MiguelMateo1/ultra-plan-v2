@@ -16,10 +16,10 @@ function createSkill (req, res, db) {
 
 //  show skills 
 function showSkill (req, res, db) {
-    const {userid} = req.headers
+    const userId = req.params.userId;
 
         const sql = "SELECT * FROM user_skills WHERE userId = ?";
-        db.query(sql,[userid] ,(err, result) => {
+        db.query(sql,[userId] ,(err, result) => {
             if(err) {
                 return res.json({error: err, message: "error"})
             } else {
@@ -63,10 +63,10 @@ function editSkill (req, res, db) {
 
 //  get stats 
 function showStats (req, res, db) {
-    const {userid} = req.headers
+    const userId = req.params.userId;
 
         const sql = "SELECT * FROM `user_stats` WHERE userId = ?";
-        db.query(sql,[userid] ,(err, result) => {
+        db.query(sql,[userId] ,(err, result) => {
             if(err) {
                 return res.json({error: err, message: "error"})
             } else {

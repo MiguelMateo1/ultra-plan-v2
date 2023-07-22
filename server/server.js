@@ -3,6 +3,8 @@ const mysql = require('mysql');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const skillsDB = require('./skillsDB.js');
+const resetPassword = require('./resetPassword.js');
+const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 const app = express();
@@ -28,28 +30,42 @@ db.connect((err) => {
 // login user 
 app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
-    const sql = "SELECT * FROM app_users WHERE email = ? AND password = ?";
+    const sql = "SELECT * FROM app_users WHERE email = ?";
 
-    db.query(sql, [email, password], (err, result) => {
-        if(err) {
+    db.query(sql, [email], (err, result) => {
+        if (err) {
             console.error('Error executing the query: ' + err);
-            return res.status(500).json({message: "'Internal server error"})
+            return res.status(500).json({ message: 'Internal server error' });
         }
+
         if (result.length > 0) {
-            // User exists
-            const id = result[0].id
-            // generate access token
-            const token = jwt.sign({id}, process.env.ACCESS_TOKEN, {
-                expiresIn: 3000,
+            // User exists, now compare the hashed password
+            bcrypt.compare(password, result[0].password, (err, isMatch) => {
+                if (err) {
+                    console.error('Error comparing passwords: ' + err);
+                    return res.status(500).json({ message: 'Internal server error' });
+                }
+
+                if (isMatch) {
+                    const id = result[0].id
+                    // generate access token
+                    const token = jwt.sign({id}, process.env.ACCESS_TOKEN, {
+                        // 4 days
+                        expiresIn: 4 * 24 * 60 * 60,
+                    });
+                    
+                    delete result[0].password
+                    result[0].token = token
+                    return res.json({auth: true, result: result});
+                } else {
+                    return res.json({auth: false, message: 'Invalid email or password' });
+                }
             });
-            
-            delete result[0].password
-            result[0].token = token
-            return res.json({auth: true, result: result});
-          } else {
-            return res.json({auth: false, message: 'Invalid email or password' });
-          }
-    })
+        } else {
+            // User not found
+            return res.json({ auth: false, message: 'Invalid email or password' });
+        }
+    });    
 });
 // login user End=========
  
@@ -75,105 +91,206 @@ const verify = (req, res, next) => {
 app.post('/update', verify , (req, res) => {
     const {first_name, last_name, email, password, id} = req.body;
 
-    // checks if new email exist
+    // checks if email exist
     const checkSql = "SELECT * FROM app_users WHERE email = ?";
     db.query(checkSql, [email], (err, result) => {
+        if (err) {
+            return res.json({ message: 'Error executing the query' });
+        }
         
         const newUserId = result[0].id
         if (newUserId != id) {
             return res.json({ message: 'User already exists' });
-         // checks if user  emailexist END====
+         // checks if email exist END====
 
         } else {
             // update new user info
-            const sql = "UPDATE app_users SET first_name = IF(?='', first_name, ?), last_name = IF(?='', last_name, ?), email = IF(?='', email, ?), password = IF(?='', password, ?) WHERE id = ?";
-            db.query(sql, [first_name, first_name, last_name, last_name, email, email, password, password, id], (err, result) => {
-                if(err) {
-                    return res.json({message: "error"})
-                } else {
-                    // user updated 
-                    // get updated user data
-                    const sql = "SELECT * FROM app_users WHERE id = ?";
-                        db.query(sql, [id], (err, result) => {
-                        // generate access token
-                        const token = jwt.sign({id}, process.env.ACCESS_TOKEN, {
-                            expiresIn: 300,
+            const updateSql = "UPDATE app_users SET first_name = IF(?='', first_name, ?), last_name = IF(?='', last_name, ?), email = IF(?='', email, ?), password = IF(?='', password, ?) WHERE id = ?";
+            if (!password) {
+                // If no new password is provided, exclude password field from the update
+                db.query(updateSql, [first_name, first_name, last_name, last_name, email, email, password, password, id], (err, result) => {
+                    if (err) {
+                        return res.json({ message: 'Error updating user info' });
+                    } else {
+                        // user updated
+                        // get updated user data
+                        const selectSql = "SELECT * FROM app_users WHERE id = ?";
+                        db.query(selectSql, [id], (err, result) => {
+                            // generate access token
+                            const token = jwt.sign({ id }, process.env.ACCESS_TOKEN, {
+                                // 4 days
+                                expiresIn: 4 * 24 * 60 * 60,
+                            });
+
+                            // deletes password and add token to results before returning the data
+                            delete result[0].password;
+                            result[0].token = token;
+                            return res.json({ auth: true, result: result });
                         });
-                        
-                        // deletes password and add token to results before returning the date
-                        delete result[0].password
-                        result[0].token = token
-                    return res.json({auth: true, result: result});
-                    })
-                }
-            })
+                    }
+                });
+            } else {
+                // Hash the new password before updating it
+                bcrypt.hash(password, 10, (err, hashedPassword) => {
+                    if (err) {
+                        return res.json({ message: 'Error hashing password' });
+                    }
+
+                    // Use hashedPassword in the query
+                    db.query(updateSql, [first_name, first_name, last_name, last_name, email, email, hashedPassword, hashedPassword, id], (err, result) => {
+                        if (err) {
+                            return res.json({ message: 'Error updating user info' });
+                        } else {
+                            // user updated
+                            // get updated user data
+                            const selectSql = "SELECT * FROM app_users WHERE id = ?";
+                            db.query(selectSql, [id], (err, result) => {
+                                // generate access token
+                                const token = jwt.sign({ id }, process.env.ACCESS_TOKEN, {
+                                    expiresIn: 4 * 24 * 60 * 60,
+                                });
+
+                                // deletes password and add token to results before returning the data
+                                delete result[0].password;
+                                result[0].token = token;
+                                return res.json({ auth: true, result: result });
+                            });
+                        }
+                    });
+                });
+            }
         }
-    })
+    });
 });
 //====== end update user
+
+
+// update user password
+app.post('/reset/password', (req, res) => {
+    const {password, email } = req.body;
+
+        // Hash the new password before updating it
+        bcrypt.hash(password, 10, (err, hashedPassword) => {
+            if (err) {
+                return res.json({ message: 'Error hashing password' });
+            }
+        // update user password
+        const sql = "UPDATE app_users SET password = ? WHERE email = ?";
+        db.query(sql, [hashedPassword,email], (err, result) => {
+            if(err) {
+                return res.status(500).json({ message: 'Internal server error' });
+            } else {
+                console.log('Password updated')
+                return res.json(result);
+            }
+        })
+    })
+});
+//=== update user password END===
+
+// checks for user email when reseting password
+app.get('/check', (req, res) => {
+    const {email} = req.query;
+
+    const checkSql = "SELECT * FROM app_users WHERE email = ?";
+    db.query(checkSql, [email], (err, result) => {
+        if (err) {
+            // Handle the database error
+            return res.status(500).json({ error: 'Database error' });
+          }
+      
+          // Check if the email exists and belongs to a user other than the specified id
+          if (result.length > 0) {
+            // user email is valid
+            return res.json({ exists: true });
+          } else {
+            // email is not in the database or belongs to the specified id
+            return res.json({ exists: false });
+          }
+    }) 
+});
+//==== checks for user email when reseting password END===
 
 // register user 
 app.post('/api/register', (req, res) => {
     const {first_name, last_name, email, password} = req.body;
       // Perform input validation
-    if (!first_name || !last_name || !email || !password) {
+     if (!first_name || !last_name || !email || !password) {
         return res.status(400).json({ message: 'All fields are required.' });
     }
 
-    // checks if user exist
+    // Check if the user already exists
     const checkSql = "SELECT * FROM app_users WHERE email = ?";
-    db.query(checkSql, [email,], (err, result) => {
+    db.query(checkSql, [email], (err, result) => {
+        if (err) {
+            console.error('Error executing the query: ' + err);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+
         if (result.length > 0) {
             return res.json({ message: 'User already exists' });
-     // checks if user exist END====
-
-        } else {
-            // register new user
-            const sql = "INSERT INTO app_users(first_name, last_name, email, password) VALUES (?,?,?,?)";
-            db.query(sql, [first_name, last_name ,email, password], (err, result) => {
-                if(err) {
-                    return res.json({message: "error"})
-                } else {
-                    // user created 
-                    // get the new user data
-                    const sql = "SELECT * FROM app_users WHERE email = ? AND password = ?";
-                    db.query(sql, [email,password], (err, result) => {
-
-                        const id = result[0].id
-                        // generate access token
-                        const token = jwt.sign({id}, process.env.ACCESS_TOKEN, {
-                            expiresIn: 300,
-                        });
-                    
-                        // deletes password and add token to results before returning the date
-                        delete result[0].password
-                        result[0].token = token
-                        // creats data table to new user
-                        const year = new Date().getFullYear();
-                        const userId = result[0].id;
-                        console.log(userId)
-                        const insertSql = `INSERT INTO user_stats (year, userid) VALUES (?, ?)`;
-                        db.query(insertSql, [year, userId], (err, resultInsert) => {
-                            if (err) {
-                                return res.json({ error: err, message: "error creating user stats" });
-                            }
-                        })
-                        return res.json({auth: true, result: result});
-                    })
-                }
-            })
-            // register new user END ===
         }
-    })
+
+        // Hash the new password before registering the user
+        bcrypt.hash(password, 10, (err, hashedPassword) => {
+            if (err) {
+                console.error('Error hashing password: ' + err);
+                return res.status(500).json({ message: 'Internal server error' });
+            }
+
+            // Register new user with hashed password
+            const sql = "INSERT INTO app_users(first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
+            db.query(sql, [first_name, last_name, email, hashedPassword], (err, insertResult) => {
+                if (err) {
+                    console.error('Error registering user: ' + err);
+                    return res.status(500).json({ message: 'Internal server error' });
+                }
+
+                // User created, get the new user data
+                const selectSql = "SELECT * FROM app_users WHERE email = ?";
+                db.query(selectSql, [email], (err, selectResult) => {
+                    if (err) {
+                        console.error('Error retrieving user data: ' + err);
+                        return res.status(500).json({ message: 'Internal server error' });
+                    }
+
+                    const id = selectResult[0].id;
+                    // generate access token
+                    const token = jwt.sign({ id }, process.env.ACCESS_TOKEN, {
+                        // 4 days
+                        expiresIn: 4 * 24 * 60 * 60,
+                    });
+
+                    // deletes password and add token to results before returning the data
+                    delete selectResult[0].password;
+                    selectResult[0].token = token;
+
+                    // create data table for new user
+                    const year = new Date().getFullYear();
+                    const userId = selectResult[0].id;
+                    const insertSql = `INSERT INTO user_stats (year, userid) VALUES (?, ?)`;
+                    db.query(insertSql, [year, userId], (err, resultInsert) => {
+                        if (err) {
+                            console.error('Error creating user stats: ' + err);
+                            return res.status(500).json({ message: 'Internal server error' });
+                        }
+
+                        return res.json({ auth: true, result: selectResult });
+                    });
+                });
+            });
+        });
+    });
 });
 // register user End====
 
+// skills query's
 // add skills
 app.post('/add-skill', verify, (req,res) => {
     skillsDB.createSkill(req,res,db);
 });
 // get all skills
-app.get('/get-skills', (req,res) => {
+app.get('/get-skills/:userId', (req,res) => {
     skillsDB.showSkill(req,res,db);
 });
 // delete skills
@@ -185,7 +302,7 @@ app.patch('/skills/:id', verify, (req,res) => {
     skillsDB.editSkill(req,res,db);
 });
 // show stats
-app.get('/skills/stats', (req,res) => {
+app.get('/get-stats/:userId', (req,res) => {
     skillsDB.showStats(req,res,db);
 });
 // log hours
@@ -196,6 +313,14 @@ app.patch('/log', (req,res) => {
 app.patch('/reset', (req,res) => {
     skillsDB.resetChart(req,res,db);
 });
+// skills query's END====
+
+// password reset
+app.post("/send_recovery_email", (req, res) => {
+    resetPassword.sendEmail(req, res)
+      .then((response) => res.send(response))
+      .catch((error) => res.status(500).send(error.message));
+  });
 
 app.listen(8000, () => {
     console.log('server started')
