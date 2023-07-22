@@ -3,11 +3,18 @@ import styled from 'styled-components'
 const Styles = styled.section`
   margin-top: 1rem;
   display: flex;
-  justify-content: start;
+  flex-direction: column;
+  place-items: center;
   justify-content: center;
-  h2 {
-    color: blue;
+
+  h6 {
+    font-size: 13px;
+    color: var(--grey-4)
   }
+
+  @media (min-width: 1185px) {
+  margin-left: -4rem;
+}
   ${'' /* calendar */}
   .react-calendar {
   width: 300px;

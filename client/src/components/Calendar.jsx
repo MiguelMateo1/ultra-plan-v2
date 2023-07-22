@@ -16,6 +16,7 @@ const CalendarArea = ({date,onChange}) => {
             value={date} 
         />
         </div>
+        <h6>*note, can only go back 3 weeks to log hours</h6>
     </Styles>
   );
 };
