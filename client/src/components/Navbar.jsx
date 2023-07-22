@@ -4,11 +4,18 @@ import Logo from './Logo';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebar, userLogout } from "../features/user/userSlice";
+import { clearValues } from "../features/skills/skillsSlice";
 
 const Navbar = () => {
     const [showLogout, setShowLogout] = useState(false);
     const { user } = useSelector((store) => store.user);
     const dispatch = useDispatch();
+
+    // when logout clears vales and remove from localStorage
+    const handleLogout = () => {
+        dispatch(userLogout('Logout successful'));
+        dispatch(clearValues());
+      };
   
     return (
         <Styles>
@@ -33,7 +40,7 @@ const Navbar = () => {
                         <button
                             type='button'
                             className='dropdown-btn'
-                            onClick={() => dispatch(userLogout('Logged out succesfully'))}>
+                            onClick={handleLogout}>
                             logout
                         </button>
                     </div>
