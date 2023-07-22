@@ -14,10 +14,10 @@ export const getAllSkills = createAsyncThunk(
   'allSkills/getAllSkills',
   async (userId) => {
       try {
-        const response = await fetchUrl.get('/get-skills', {headers: {userId: userId}});
+        const response = await fetchUrl.get(`/get-skills/${userId}`);
         return response.data;
       } catch (error) {
-        return console.log(error);
+        return toast.error(error.message);
       }
   }
 );
@@ -27,10 +27,9 @@ export const showStats = createAsyncThunk(
   'allSkills/showStats',
   async (userId) => {
       try {
-        const response = await fetchUrl.get('/skills/stats', {headers: {userId: userId}});
+        const response = await fetchUrl.get(`/get-stats/${userId}`);
         return response.data;
       } catch (error) {
-        console.log(error);
         return toast.error(error.message);
       }
   }

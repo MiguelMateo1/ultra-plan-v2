@@ -26,7 +26,7 @@ export const registerUser = createAsyncThunk(
 // login user
 export const loginUser = createAsyncThunk(
     'user/loginUser',
-    async (user) => {
+    async (user, thunkAPI) => {
         try {
           const response = await fetchUrl.post('/api/login', user)
           return response.data
@@ -49,6 +49,20 @@ export const updateUser = createAsyncThunk(
         thunkAPI.dispatch(userLogout());
         return thunkAPI.rejectWithValue('Unauthorized, Logging Out..');
       }
+      return response.data
+    } catch (err) {
+        console.log(err)
+      return toast.error(err.message);
+    }
+  }
+);
+
+// update password
+export const updateUserPassord = createAsyncThunk(
+  'user/updateUserPassord',
+  async ( {password,email} ) => {
+    try {
+      const response = await fetchUrl.post('/reset/password', {password,email});
       return response.data
     } catch (err) {
         console.log(err)

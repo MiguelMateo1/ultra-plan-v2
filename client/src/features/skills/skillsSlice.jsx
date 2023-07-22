@@ -30,9 +30,14 @@ export const createSkill = createAsyncThunk(
         try {
           const response = await fetchUrl.post('/add-skill', skill, authHeader(thunkAPI));
           thunkAPI.dispatch(clearValues());
+          // if token expired/not match
+          if (response.data.auth == false) {
+            thunkAPI.dispatch(userLogout());
+            return thunkAPI.rejectWithValue('Unauthorized, Logging Out..');
+          }
           return response.data;
         } catch (error) {
-          return console.log(error);
+          return thunkAPI.rejectWithValue(error.response);
         }
     }
 );
@@ -86,14 +91,14 @@ const skillsSlice = createSlice({
     handleChange: (state, { payload: { name, value } }) => {
       state[name] = value;
     },
-    clearValues: () => {
+    clearValues: (state) => {
       // gets and remove active class from icons
       const icons = document.querySelectorAll('.skill-icon');
       icons.forEach(s => {
         s.classList.remove('active')
       })
       // sets state to initial state
-      return initialState
+      Object.assign(state, initialState);
     },
     setEditSkill: (state, { payload }) => {
       return { ...state, isEditing: true, ...payload };
