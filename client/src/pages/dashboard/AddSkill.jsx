@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import { FormRow, FormRowSelect } from '../../components';
 import Styles from '../../assets/styles/ProfileFormCSS';
 import { useSelector, useDispatch } from 'react-redux';

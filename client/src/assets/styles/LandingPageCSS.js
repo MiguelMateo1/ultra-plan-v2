@@ -64,11 +64,15 @@ const Styles = styled.main`
   }
   h1 {
     font-weight: 600;
+    line-height: 50px;
+    margin-bottom: .8rem;
+
     span {
       color: var(--secondary-3);
     }
   }
   .intro-text {
+    margin-bottom: 2rem;
     color: var(--grey-1);
   }
   .main-img {
@@ -79,7 +83,7 @@ const Styles = styled.main`
   }
   .btn {
     color:  var(--secondary-2);
-    background-color: var(--primary-6);
+    background-color: var(--primary-5);
     padding: 10px 20px;
     font-size: 1.2rem;
   }

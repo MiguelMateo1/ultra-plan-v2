@@ -45,6 +45,10 @@ const Styles = styled.section`
     color: var(--secondary-4);
     cursor: pointer;
     letter-spacing: var(--letterSpacing);
+    margin-left: 7px;
   }
+  .password-p {
+      color: var(--grey-4);
+    }
 `
 export default Styles;

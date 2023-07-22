@@ -131,6 +131,7 @@ p {
 }
 
 .social-links {
+  display: flex;
   grid-row: 2/3;
   grid-column: 1/3;
   z-index: 2;
@@ -140,11 +141,11 @@ p {
   border: 1px solid var(--grey-3);
   background-color: var(--grey-2);
   color: var(--primary-2);
-  border-radius: 450px;
+  border-radius: 40px;
   grid-row: 1/2;
   grid-column: 2/3;
   margin-right: 1rem;
-  padding: 4px 10px;
+  padding: 7px;
   transition: 0.2s ease-in-out all;
   font-size: 1.5rem;
 }

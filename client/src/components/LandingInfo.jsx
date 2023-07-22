@@ -47,10 +47,10 @@ const LandingInfo = () => {
             <aside className='logo-area'>
                 <Logo/>
             </aside>
-            <h5 className='social-links'>
+            <div className='social-links'>
                 <FaInstagram className='social-icon'/><FaLinkedinIn className='social-icon'/>
                 <FaTwitter className='social-icon' />
-            </h5>
+            </div>
             <a className='footer-btn' href="#">
                 <FaAngleUp className='footer-btn-icon'/>
             </a>

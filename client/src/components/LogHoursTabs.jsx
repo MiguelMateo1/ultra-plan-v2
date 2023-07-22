@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CalendarArea from './Calendar';
@@ -29,6 +30,7 @@ const LogHoursTabs = () => {
     const month = format(date, 'MMM');
     const year = format(date, 'yyyy');
     const btnDate = (format(date, 'MM/dd/yy'))
+    const userId = user.id
 
     // selected skill id/ gets selected id func
     const initialId = (skills && skills.length > 0) ? skills[0].id : null;
@@ -42,16 +44,14 @@ const LogHoursTabs = () => {
     // skill index/name
     let index = skills.findIndex(i => i.id == id);
     const skillName = index != -1 ? skills[index]?.skill_name : null;
-    // let skillName = (skills && skills.length > 0) ? skills[index].skill_name : null;
 
     function handleClick () {
         if (!hour) {
             toast.warning('no hours logged, select hours');
             return
         }
-        dispatch(logHours({ id, userId: user.id, month, hour, year }));
+        dispatch(logHours({ id, userId, month, hour, year }));
 
-        // let index = skills.findIndex(i => i.id == id);
         toast.success(`Hours logged for ${skillName}!!`);
     }
 

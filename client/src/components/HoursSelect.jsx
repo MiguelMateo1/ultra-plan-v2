@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 
+// eslint-disable-next-line react/prop-types
 const HoursSelect = ({ day, hour, setHour, btnClick, name }) => {
 //   gets select hour
   const handleClick = (e) => {

@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-key */
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Styles from '../assets/styles/SkillCSS';
@@ -28,7 +30,6 @@ const Skill = ({
   date_created,
   icon,
   completed_hours,
-  isEditing,
 }) => {
   const dispatch = useDispatch();
 
