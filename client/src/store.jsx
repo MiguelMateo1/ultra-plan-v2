@@ -11,4 +11,5 @@ export const store = configureStore({
         allSkills: allSkillsSlice,
         reset: resetPasswordSlice 
     },
+    devTools: false
 });
