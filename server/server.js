@@ -8,14 +8,26 @@ const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());  
 app.use(express.json());
+// app.use(cors());  
+app.use(cors({
+    origin: function (origin, callback) {
+      // Check if the request origin is in the allowedOrigins array
+      if (!origin || process.env.ALLOWED_ORIGINS.includes(origin)) {
+        // Allow the request
+        callback(null, true);
+      } else {
+        // Deny the request with an error message
+        callback(new Error('Not allowed by CORS'));
+      }
+    } 
+  }));
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'test'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 });
 
 // Connect to the database
