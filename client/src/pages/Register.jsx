@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 // axios
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, registerUser } from '../features/user/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const initialState = {
   first_name: '',
@@ -122,6 +122,14 @@ function Register() {
             {member ? 'Register' : 'Login'}
           </button>
         </p> 
+        {member && 
+          <p className='password-p'>
+            Forgot password?
+            <Link to='/forgotpassword' className='member-btn'>
+              Reset
+            </Link>
+          </p> 
+          }
       </form>
     </Styles>
   );
