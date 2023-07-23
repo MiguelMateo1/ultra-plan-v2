@@ -1,6 +1,7 @@
 import StudyImg from '../assets/images/landingPage/study.svg';
 import carImg from '../assets/images/landingPage/car.png'
 import bikeImg from '../assets/images/landingPage/bike.png'
+import footerImg from '../assets/images/landingPage/footer-img-1.png'
 import Styles from '../assets/styles/LandingInfoCSS';
 import { Logo } from '.';
 // icons
@@ -56,7 +57,7 @@ const LandingInfo = () => {
             </a>
 
         </div>
-        <div className='footer-img'>
+        <div className='footer-img' style={{backgroundImage: `url(${footerImg})`}}>
             <img src={carImg} alt='car-image' className='footer-icon'></img>
             <img src={bikeImg} alt='car-image' className='footer-icon-2'></img>
         </div>

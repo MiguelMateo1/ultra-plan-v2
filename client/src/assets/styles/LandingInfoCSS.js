@@ -72,7 +72,7 @@ p {
 }
 
 .footer-img {
-  background-image: url(src/assets/images/landingPage/footer-img-1.png);
+  ${'' /* background-image: url('/images/landingPage/footer-img-1.png'); */}
   height: 350px;
   width: 1100px;
   position: absolute;
