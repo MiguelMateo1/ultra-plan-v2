@@ -21,7 +21,6 @@ const Styles = styled.aside`
   .sidebar-container {
     position: fixed;
     margin-left: -100%;
-    ${'' /* width: 90%; */}
     inset: 0;
     background: rgba(0, 0, 0, 0.7);
     display: flex;
@@ -38,9 +37,8 @@ const Styles = styled.aside`
   }
   .content {
     background: #fff;
-    ${'' /* background: var(--grey-1); */}
-    width: 90vw;
-    height: 95vh;
+    width: 85vw;
+    height: 85vh;
     border-radius: var(--border-radius);
     padding: 4rem 2rem;
     position: relative;

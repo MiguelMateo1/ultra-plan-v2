@@ -69,7 +69,7 @@ const Styles = styled.article`
     text-transform: capitalize;
     letter-spacing: var(--letterSpacing);
     text-align: center;
-    width: 100px;
+    width: 125px;
     height: 30px;
     margin-top: 1rem;
     padding: 3px 5px;

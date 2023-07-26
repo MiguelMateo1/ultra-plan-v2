@@ -77,7 +77,7 @@ p {
   width: 1100px;
   position: absolute;
   left: 50%;
-  bottom: 40px;
+  bottom: 51px;
   transform: translate(-50%);
   background-repeat: no-repeat;
 }
