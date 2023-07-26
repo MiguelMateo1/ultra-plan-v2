@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const skillsDB = require('./skillsDB.js');
 const resetPassword = require('./resetPassword.js');
 const bcrypt = require('bcrypt');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -332,7 +333,15 @@ app.post("/send_recovery_email", (req, res) => {
     resetPassword.sendEmail(req, res)
       .then((response) => res.send(response))
       .catch((error) => res.status(500).send(error.message));
-  });
+});
+
+// Serve the static files from the React app
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// The catch-all route to serve the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 app.listen(8000, () => {
     console.log('server started')
