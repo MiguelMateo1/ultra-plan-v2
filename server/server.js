@@ -8,7 +8,6 @@ const bcrypt = require('bcrypt');
 const path = require('path');
 require('dotenv').config();
 
-app.use(express.static(path.join(__dirname, '/')));
 
 const app = express();
 app.use(express.json());
@@ -24,7 +23,14 @@ app.use(cors({
         callback(new Error('Not allowed by CORS'));
       }
     } 
-  }));
+}));
+
+// Serve the static files
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -335,12 +341,6 @@ app.post("/send_recovery_email", (req, res) => {
     resetPassword.sendEmail(req, res)
       .then((response) => res.send(response))
       .catch((error) => res.status(500).send(error.message));
-});
-
-
-// The catch-all route to serve the React app
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '/', 'index.html'));
 });
 
 app.listen(8000, () => {
