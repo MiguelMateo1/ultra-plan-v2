@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const skillsDB = require('./skillsDB.js');
 const resetPassword = require('./resetPassword.js');
 const bcrypt = require('bcrypt');
-const path = require('path');
 require('dotenv').config();
 
 
@@ -24,13 +23,6 @@ app.use(cors({
       }
     } 
 }));
-
-// Serve the static files
-app.use(express.static(path.join(__dirname, 'build')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
