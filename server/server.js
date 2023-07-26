@@ -8,6 +8,8 @@ const bcrypt = require('bcrypt');
 const path = require('path');
 require('dotenv').config();
 
+app.use(express.static(path.join(__dirname, '/')));
+
 const app = express();
 app.use(express.json());
 // app.use(cors());  
@@ -335,12 +337,10 @@ app.post("/send_recovery_email", (req, res) => {
       .catch((error) => res.status(500).send(error.message));
 });
 
-// Serve the static files from the React app
-app.use(express.static(path.join(__dirname, 'netlify/dist')));
 
 // The catch-all route to serve the React app
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'netlify/dist', 'index.html'));
+  res.sendFile(path.resolve(__dirname, '/', 'index.html'));
 });
 
 app.listen(8000, () => {
