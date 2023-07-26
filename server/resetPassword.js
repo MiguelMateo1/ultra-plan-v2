@@ -5,7 +5,7 @@ function sendEmail(req, res) {
     const {email,otp} = req.body
     return new Promise((resolve, reject) => {
       var transporter = nodemailer.createTransport({
-        service: "gmail",
+        service: "outlook",
         auth: {
           user: process.env.MY_EMAIL,
           pass: process.env.MY_PASSWORD,
