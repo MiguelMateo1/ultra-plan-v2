@@ -41,11 +41,14 @@ export const logHours = createAsyncThunk(
   async ({id, userId, month, hour, year}, thunkAPI) => {
       try {
         const response = await fetchUrl.patch(`/log`, {id, userId, month, hour, year});
+        if  (response.data.message == 'demo') {
+          toast.warning('Demo user cannot perform this action')
+          return
+        }
         thunkAPI.dispatch(showStats(userId));
         thunkAPI.dispatch(getAllSkills(userId));
         return response
       } catch (error) {
-        console.log(error);
         return toast.error(error.message);
       }
   }
@@ -56,6 +59,10 @@ export const resetChart = createAsyncThunk('allSkills/resetChart',
   async (userId, thunkAPI) => {
       try {
         const response = await fetchUrl.patch(`/reset`, {userId});
+        if  (response.data.message == 'demo') {
+          toast.warning('Demo user cannot perform this action')
+          return
+        }
         thunkAPI.dispatch(showStats(userId));
         return response.data
       } catch (error) {

@@ -51,7 +51,9 @@ const LogHoursTabs = () => {
             return
         }
         dispatch(logHours({ id, userId, month, hour, year }));
-
+        if (userId == 1) {
+            return
+        }
         toast.success(`Hours logged for ${skillName}!!`);
     }
 

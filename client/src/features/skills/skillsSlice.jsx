@@ -30,6 +30,10 @@ export const createSkill = createAsyncThunk(
         try {
           const response = await fetchUrl.post('/add-skill', skill, authHeader(thunkAPI));
           thunkAPI.dispatch(clearValues());
+          if  (response.data.message == 'demo') {
+            toast.warning('Demo user cannot perform this action')
+            return
+          }
           // if token expired/not match
           if (response.data.auth == false) {
             thunkAPI.dispatch(userLogout());
@@ -37,6 +41,7 @@ export const createSkill = createAsyncThunk(
           }
           return response.data;
         } catch (error) {
+          console.log(error)
           return thunkAPI.rejectWithValue(error.response);
         }
     }
@@ -49,6 +54,11 @@ export const deleteSkill = createAsyncThunk(
       thunkAPI.dispatch(showLoading());
         try {
           const response = await fetchUrl.delete(`/skills/${skillId}`, authHeader(thunkAPI));
+          console.log(response.data)
+          if  (response.data.message == 'demo') {
+            toast.warning('Demo user cannot perform this action')
+            return
+          }
           const userId = thunkAPI.getState().user.user.id;
           // if token expired/not match
           if (response.data.auth == false) {
@@ -70,6 +80,10 @@ export const editSkill = createAsyncThunk(
   async ( {skillId, skill}, thunkAPI) => {
     try {
       const response = await fetchUrl.patch(`/skills/${skillId}`, skill, authHeader(thunkAPI));
+      if  (response.data.message == 'demo') {
+        toast.warning('Demo user cannot perform this action')
+        return
+      }
       // if token expired/not match
       if (response.data.auth == false) {
         thunkAPI.dispatch(userLogout());
@@ -122,7 +136,11 @@ const skillsSlice = createSlice({
         state.isLoading = false;
         toast.error(payload);
       })
-      .addCase(deleteSkill.fulfilled, () => {
+      .addCase(deleteSkill.fulfilled, ({ payload }) => {
+        if  (payload.data.message == 'demo') {
+          toast.warning('Demo user cannot perform this action')
+          return
+        }
         toast.success('Job deleted');
       })
       .addCase(deleteSkill.rejected, (state, { payload }) => {

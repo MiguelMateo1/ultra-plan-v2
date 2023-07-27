@@ -45,6 +45,10 @@ export const updateUser = createAsyncThunk(
       const response = await fetchUrl.post('/update', user, { 
         headers: { authorization: thunkAPI.getState().user.user.token} 
       });
+      if  (response.data.message == 'demo') {
+        toast.warning('Demo user cannot perform this action')
+        return
+      }
       if (response.data.auth == false) {
         thunkAPI.dispatch(userLogout());
         return thunkAPI.rejectWithValue('Unauthorized, Logging Out..');
@@ -132,9 +136,6 @@ const userSlice = createSlice({
             toast.error(payload);
           })
           // update user
-          .addCase(updateUser.pending, (state) => {
-            state.isLoading = true;
-          })
           .addCase(updateUser.fulfilled, (state, action) => {
             state.isLoading = false;
             if (action.payload == 'no token' || action.payload == 'error') {
