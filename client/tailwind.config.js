@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./src/pages/OTPInput.jsx'],
+  content: ['./src/pages/passwordReset/OTPInput.jsx'],
   theme: {
     extend: {},
   },

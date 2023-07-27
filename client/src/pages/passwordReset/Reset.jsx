@@ -1,10 +1,10 @@
-import Styles from '../assets/styles/RegisterCSS';
-import { useState, useEffect } from 'react';
-import { Logo, FormRow, Loader } from '../components';
+import Styles from '../../assets/styles/RegisterCSS';
+import { useState } from 'react';
+import { Logo, FormRow, Loader } from '../../components';
 import { toast } from 'react-toastify';
 // axios
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUserPassord } from '../features/user/userSlice';
+import { updateUserPassord } from '../../features/user/userSlice';
 import { Link, useNavigate } from 'react-router-dom';
 
 const initialState = {

@@ -1,14 +1,12 @@
-import Styles from '../assets/styles/RegisterCSS';
-import { useState, useEffect } from 'react';
-import { Logo, FormRow, Loader } from '../components';
+import Styles from '../../assets/styles/RegisterCSS';
+import { useState } from 'react';
+import { Logo, FormRow, Loader } from '../../components';
 import { toast } from 'react-toastify';
 // axios
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, registerUser } from '../features/user/userSlice';
-import { resetPassword } from '../features/user/resetPasswordSlice';
+import { resetPassword } from '../../features/user/resetPasswordSlice';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import fetchUrl from '../utils/axios';
+import fetchUrl from '../../utils/axios';
 
 const initialState = {
   email: '',

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
-import fetchUrl from "../utils/axios";
+import fetchUrl from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
 import './OTPPageCSS.css'
 
