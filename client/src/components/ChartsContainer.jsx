@@ -15,7 +15,7 @@ import Modal from '@mui/material/Modal';
 const ChartsContainer = () => {
   const { stats } = useSelector((store) => store.allSkills);
   const dispatch = useDispatch()
-  const [barChart, setBarChart] = useState(false);
+  const [barChart, setBarChart] = useState(true);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
   // gets years from db if hours are logged, to display the years and select
