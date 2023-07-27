@@ -2,9 +2,11 @@ const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const skillsDB = require('./skillsDB.js');
-const resetPassword = require('./resetPassword.js');
 const bcrypt = require('bcrypt');
+
+const skillsDB = require('./skillsDB.js');
+const { verify, isDemoUser } = require('./authMiddleware');
+const resetPassword = require('./resetPassword.js');
 require('dotenv').config();
 
 
@@ -81,27 +83,9 @@ app.post('/api/login', (req, res) => {
     });    
 });
 // login user End=========
- 
-// token verify func
-const verify = (req, res, next) => {
-    const token = req.headers.authorization
-
-    if (!token) {
-        res.send('no token')
-    } else {
-        jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
-            if (err) {
-                res.json({err: err,auth: false, message: 'failed to authenticate'});
-            } else {
-                next();
-            }
-        })
-    }
-};
-// token verify func END
 
 // update user
-app.post('/update', verify , (req, res) => {
+app.post('/update', [isDemoUser, verify] , (req, res) => {
     const {first_name, last_name, email, password, id} = req.body;
 
     // checks if email exist
@@ -299,7 +283,7 @@ app.post('/api/register', (req, res) => {
 
 // skills query's
 // add skills
-app.post('/add-skill', verify, (req,res) => {
+app.post('/add-skill', [isDemoUser, verify], (req,res) => {
     skillsDB.createSkill(req,res,db);
 });
 // get all skills
@@ -307,11 +291,11 @@ app.get('/get-skills/:userId', (req,res) => {
     skillsDB.showSkill(req,res,db);
 });
 // delete skills
-app.delete('/skills/:id', verify, (req,res) => {
+app.delete('/skills/:id', [isDemoUser, verify], (req,res) => {
     skillsDB.deleteSkill(req,res,db);
 });
 // edit skills
-app.patch('/skills/:id', verify, (req,res) => {
+app.patch('/skills/:id', [isDemoUser, verify], (req,res) => {
     skillsDB.editSkill(req,res,db);
 });
 // show stats
@@ -319,11 +303,11 @@ app.get('/get-stats/:userId', (req,res) => {
     skillsDB.showStats(req,res,db);
 });
 // log hours
-app.patch('/log', (req,res) => {
+app.patch('/log', isDemoUser, (req,res) => {
     skillsDB.logHours(req,res,db);
 });
 // reset chart
-app.patch('/reset', (req,res) => {
+app.patch('/reset', isDemoUser, (req,res) => {
     skillsDB.resetChart(req,res,db);
 });
 // skills query's END====
