@@ -110,7 +110,7 @@ function Register() {
         <button type='button' className='btn btn-block demo-btn' disabled={isLoading}
           onClick={() =>
             dispatch(
-              loginUser({ email: 'test@user.com', password: '12345' })
+              loginUser({ email: 'test@user.com', password: '777' })
             )
           }
         >
