@@ -28,16 +28,18 @@ const Styles = styled.section`
     left: 50px;
   }
   h6 {
+    font-size: .9rem;
     margin: 0;
     margin-right: 5px;
     text-decoration: underline; 
     cursor: pointer;
     display: inline-block;
     transition: var(--transition);
+    color: var(--primary-2);
   }
   h6.active {
-    font-size: .9rem;
-    color: var(--primary-2);
+    font-size: 1rem;
+    color: var(--primary-5);
   }
   .btn {
     color: darkred;

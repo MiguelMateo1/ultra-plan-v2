@@ -10,13 +10,14 @@ const Styles = styled.div`
   }
 
   h6 {
+    font-size: .8rem;
     padding: 0px 10px;
     border-radius: var(--border-radius);
     background-color: var(--grey-1);
     color: var(--grey-5);
     position: absolute;
     left: 30px;
-    bottom: 0px;
+    top: -18px;
   }
   .icon {
     font-size: 1rem;
