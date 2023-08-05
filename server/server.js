@@ -43,7 +43,7 @@ db.connect((err) => {
   });
 
 // login user 
-app.post('/api/login', (req, res) => {
+app.post('/login', (req, res) => {
     const { email, password } = req.body;
     const sql = "SELECT * FROM app_users WHERE email = ?";
 
@@ -209,7 +209,7 @@ app.get('/check', (req, res) => {
 //==== checks for user email when reseting password END===
 
 // register user 
-app.post('/api/register', (req, res) => {
+app.post('/register', (req, res) => {
     const {first_name, last_name, email, password} = req.body;
       // Perform input validation
      if (!first_name || !last_name || !email || !password) {
