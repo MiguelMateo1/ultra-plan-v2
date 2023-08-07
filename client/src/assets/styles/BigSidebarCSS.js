@@ -24,7 +24,7 @@ const Styles = styled.aside`
     .logo-text {
       padding-top: 5px;
       margin-left: -10px;
-      font-weight: 600;
+      font-weight: 400;
       font-size: 1.4rem;
     }
     .content {

@@ -1,4 +1,6 @@
 /* golbal styles and variables*/
+/* font */
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@200;300;400&display=swap');
 *,
 ::after,
 ::before {
@@ -120,7 +122,7 @@ ul {
   color: #fff;
   padding: 0.6em 1.2em;
   font-size: 1em;
-  font-weight: 500;
+  font-weight: 400;
   font-family: inherit;
   background-color: var(--primary-2);
   cursor: pointer;

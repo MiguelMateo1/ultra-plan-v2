@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 const Styles = styled.nav`
+  font-family: 'Urbanist', sans-serif;
   height: 6rem;
   display: flex;
   align-items: center;
@@ -15,6 +16,7 @@ const Styles = styled.nav`
     width: 55px;
   }
   .logo-text {
+    font-size: 1.75rem;
     display: none;
     margin: 0;
   }
@@ -72,7 +74,7 @@ const Styles = styled.nav`
     border-color: transparent;
     color: var(--primary-7);
     letter-spacing: var(--letterSpacing);
-    font-weight: 600;
+    font-weight: 400;
     text-transform: capitalize;
     cursor: pointer;
   }
