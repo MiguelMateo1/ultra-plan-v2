@@ -1,10 +1,17 @@
 import NavLinks from './NavLinks';
 import Logo from '../components/Logo';
 import Wrapper from '../assets/styles/BigSidebarCSS';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPageName } from "../features/user/userSlice";
 
 const BigSidebar = () => {
   const { sidebarOpen } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+
+  const setPageName = (e) => {
+    const page = e.target.textContent;
+    dispatch(getPageName(page))
+  };
 
   return (
     <Wrapper>
@@ -15,7 +22,7 @@ const BigSidebar = () => {
                 <Logo />
                 <h3 className='logo-text'>ltra Plan</h3>
           </header>
-          <NavLinks />
+          <NavLinks toggleSidebar={setPageName}/>
         </div>
       </div>
     </Wrapper>

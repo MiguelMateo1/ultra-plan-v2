@@ -9,6 +9,7 @@ import { clearValues } from "../features/skills/skillsSlice";
 const Navbar = () => {
     const [showLogout, setShowLogout] = useState(false);
     const { user } = useSelector((store) => store.user);
+    const { currentPage } = useSelector((store) => store.user);
     const dispatch = useDispatch();
 
     // when logout clears vales and remove from localStorage
@@ -25,7 +26,7 @@ const Navbar = () => {
                 </button>
                 <div className="logo-div">
                     <Logo />
-                    <h3 className='logo-text'>dashboard</h3>
+                    <h3 className='logo-text'>{currentPage}</h3>
                 </div>
                 <div className='btn-container'>
                     <button

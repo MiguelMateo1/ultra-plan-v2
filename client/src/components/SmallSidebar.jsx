@@ -2,7 +2,7 @@ import Styles from "../assets/styles/SmallSidebarCSS.js";
 import { FaTimes } from 'react-icons/fa';
 import Logo from './Logo';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleSidebar } from "../features/user/userSlice";
+import { toggleSidebar,getPageName } from "../features/user/userSlice";
 import NavLinks from './NavLinks';
 
 const SmallSidebar = () => {
@@ -10,8 +10,10 @@ const SmallSidebar = () => {
     const { sidebarOpen } = useSelector((store) => store.user);
     const dispatch = useDispatch();
   
-    const toggle = () => {
+    const toggle = (e) => {
+      const page = e.target.textContent;
       dispatch(toggleSidebar());
+      dispatch(getPageName(page));
     };
     return (
       <Styles>
