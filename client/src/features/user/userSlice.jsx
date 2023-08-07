@@ -6,6 +6,7 @@ import {addUserToLocalStorage,getUserFromLocalStorage,removeUserFromLocalStorage
 const initialState = {
     isLoading: false,
     sidebarOpen: false,
+    currentPage: localStorage.getItem('currentPage') || 'stats',
     user: getUserFromLocalStorage(),
 };
 
@@ -14,7 +15,7 @@ export const registerUser = createAsyncThunk(
     'user/registerUser',
     async (user) => {
         try {
-          const response = await fetchUrl.post('/api/register', user)
+          const response = await fetchUrl.post('/register', user)
           return response.data
         } catch (err) {
             console.error('Error occurred:', err.response);
@@ -28,7 +29,7 @@ export const loginUser = createAsyncThunk(
     'user/loginUser',
     async (user, thunkAPI) => {
         try {
-          const response = await fetchUrl.post('/api/login', user)
+          const response = await fetchUrl.post('/login', user)
           return response.data
         } catch (err) {
             console.log(err, 'error loging in');
@@ -79,13 +80,19 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
+      getPageName: (state, {payload}) => {
+        state.currentPage = payload
+        localStorage.setItem('currentPage', payload);
+      },
       toggleSidebar: (state) => {
         state.sidebarOpen = !state.sidebarOpen
       },
       userLogout: (state, {payload}) => {
         state.user = null;
         state.sidebarOpen = false;
+        state.currentPage = 'stats';
         removeUserFromLocalStorage();
+        localStorage.removeItem('currentPage');
         if (payload) {
           toast.success(payload);
         }
@@ -165,5 +172,5 @@ const userSlice = createSlice({
         }
 });
 
-export const { toggleSidebar, userLogout } = userSlice.actions
+export const { toggleSidebar, userLogout, getPageName } = userSlice.actions
 export default userSlice.reducer;
