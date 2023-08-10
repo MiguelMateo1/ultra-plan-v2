@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { LandingPage, Error, Register, ProtectedRoute, PasswordReset, OTPInput, Reset} from "./pages"
-import { Profile, AddSkill, Stats, Layout, MySkills } from './pages/dashboard';
+import { Profile, AddSkill, Stats, Layout, MySkills, Resources } from './pages/dashboard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -19,6 +19,7 @@ function App() {
             <Route path='my-skills' element={<MySkills />} />
             <Route path='add-skill' element={<AddSkill />} />
             <Route path='profile' element={<Profile />} />
+            <Route path='resources' element={<Resources />} />
         </Route>
 
         <Route path="landing" element={<LandingPage />} />
