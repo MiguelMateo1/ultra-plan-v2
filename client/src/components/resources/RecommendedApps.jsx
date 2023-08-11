@@ -1,27 +1,32 @@
-import React from 'react';
 import styled from 'styled-components';
 
 const appsData = [
     {
-      title: 'App 1',
-      tags: ['Productivity', 'Utility'],
+      title: 'Quizlet',
+      tags: ['Flashcards', 'Studying'],
       image: 'https://assets.quizlet.com/a/j/dist/app/i/brandmark/1024.0e9431247202b7b.png',
-      link: 'https://example.com/app1'
+      link: 'https://quizlet.com/'
     },
     {
-      title: 'App 2',
-      tags: ['Entertainment', 'Games'],
-      image: 'https://assets.quizlet.com/a/j/dist/app/i/brandmark/1024.0e9431247202b7b.png',
-      link: 'https://example.com/app2'
+      title: 'Memrise',
+      tags: ['Language', 'Studying'],
+      image: 'https://upload.wikimedia.org/wikipedia/en/3/39/Memrise-new-logo.png',
+      link: 'https://www.memrise.com/en-us/'
     },
     {
-      title: 'App 3',
-      tags: ['Health', 'Fitness'],
-      image: 'https://assets.quizlet.com/a/j/dist/app/i/brandmark/1024.0e9431247202b7b.png',
-      link: 'https://example.com/app3'
+      title: 'Evernote',
+      tags: ['Note-taking'],
+      image: 'https://developer.android.com/static/images/distribute/stories/evernote.png',
+      link: 'https://evernote.com/'
+    },
+    {
+      title: 'Musora',
+      tags: ['Instruments Learning'],
+      image: 'https://play-lh.googleusercontent.com/7_-4nab96XggKoTqB7qatLEnFAScnmDOCEP-tslVZqbi1LHviOGIf1gPA_6bl2oXRA',
+      link: 'https://www.musora.com/'
     },
   ];
-  
+
   const RecommendedApps = () => {
     return (
       <Section>
