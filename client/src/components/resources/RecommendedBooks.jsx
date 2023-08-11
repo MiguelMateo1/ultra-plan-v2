@@ -1,27 +1,33 @@
-import React from 'react';
 import styled from 'styled-components';
 
 const booksData = [
     {
-      title: 'Ultra Plan',
-      tags: ['Fiction', 'Adventure'],
+      title: 'Ultralearning',
+      tags: ['Mindset', 'Learning'],
       image: 'https://m.media-amazon.com/images/I/51PfH156fIL._SY346_.jpg',
-      link: 'https://example.com/book1',
-      desc: 'lkg jfjgv jf hvj hvtfldf frfrgtholom momom m omom ooookjgigk',
+      link: 'https://www.amazon.com/Ultralearning-Master-Outsmart-Competition-Accelerate/dp/006285268X/ref=tmm_hrd_swatch_0?_encoding=UTF8&qid=1675111389&sr=1-1',
+      desc: 'Master Hard Skills, Outsmart the Competition, and Accelerate Your Career.',
     },
     {
-      title: 'Book 2',
-      tags: ['Mystery', 'Thriller', 'Thriller' ],
-      image: 'https://m.media-amazon.com/images/I/51PfH156fIL._SY346_.jpg',
-      link: 'https://example.com/book2',
-      desc: 'lkg jfjgv jf hvj hvtfldf frfrgtholom t by sder 4rtrg momom m omom ooookjgigk'
+      title: 'Extreme Ownership',
+      tags: ['Mindset', 'Accountability'],
+      image: 'https://m.media-amazon.com/images/I/51yoHjJDQ3L._SX329_BO1,204,203,200_.jpg',
+      link: 'https://www.amazon.com/Extreme-Ownership-U-S-Navy-SEALs/dp/1250183863/ref=tmm_hrd_swatch_0?_encoding=UTF8&qid=1675112276&sr=8-1',
+      desc: 'Personal accountability a core principles for achieving success in professional and personal endeavors.'
     },
     {
-      title: 'Book 3',
-      tags: ['Fantasy', 'Magic'],
-      image: 'https://m.media-amazon.com/images/I/51PfH156fIL._SY346_.jpg',
-      link: 'https://example.com/book3',
-      desc: 'lkg jfjgv jf hvj hvtfldf frfrgtholom momom m omom ooookjgigk',
+      title: 'Atomic Habits',
+      tags: ['Habits', 'Productivity'],
+      image: 'https://m.media-amazon.com/images/I/51ZJ9RjiC0L._SX328_BO1,204,203,200_.jpg',
+      link: 'https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/1847941842/ref=tmm_pap_swatch_0?_encoding=UTF8&qid=1675112258&sr=1-1',
+      desc: 'Science-backed methods for creating and sustaining small, powerful habits that lead to personal growth.',
+    },
+    {
+      title: 'Peak',
+      tags: ['Learning', 'Growth'],
+      image: 'https://m.media-amazon.com/images/I/41Rc7VXWGxL._SY291_BO1,204,203,200_QL40_FMwebp_.jpg',
+      link: 'https://www.amazon.com/Peak-Secrets-New-Science-Expertise/dp/0544947223/ref=tmm_pap_swatch_0?_encoding=UTF8&qid=1675112340&sr=8-1',
+      desc: 'Insights into how individuals can achieve mastery and reach their highest levels of performance.',
     },
   ];
   
@@ -113,6 +119,7 @@ const booksData = [
   `;
 
   const BookTags = styled.div`
+    margin: 0 auto;
     max-width: 180px;
     padding: 4px 5px;
   `;
