@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components'
 import RecommendedBooks from '../../components/resources/RecommendedBooks';
 import RecommendedApps from '../../components/resources/RecommendedApps';
-import RecommendedVideos from '../../components/resources/RecommendedVideos';
+import Footer from '../../components/resources/Footer';
 // modal mui/styles
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -29,7 +29,7 @@ const Resources = () => {
     <Styles>
       <RecommendedBooks />
       <RecommendedApps />
-      <RecommendedVideos />
+      <Footer />
 
       <Modal
             open={open}
@@ -40,9 +40,9 @@ const Resources = () => {
             <Box sx={modalStyle}>
               <h4>Welcome to our Resource page!</h4>
               <br></br>
-              <h5 style={{ textTransform: 'none' }}>Here you'll find a handpicked selection 
-              of recommended books, enlightening videos, and useful apps to support
-               you on your learning journey. Happy learning!"</h5>
+              <h5 style={{ textTransform: 'none' }}>Here you will find a handpicked selection 
+               of recommended books, and useful apps to support
+               you on your learning journey. Happy learning!</h5>
             </Box>
           </Modal>
     </Styles>
@@ -52,7 +52,7 @@ const Resources = () => {
   // css
   const Styles = styled.div`
   color: #fff;
-  background-color: var(--grey-3);
+  background-color: var(--grey-4);
   width: 111%;
   overflow: hidden;
   display: flex;

@@ -13,21 +13,28 @@ const booksData = [
       tags: ['Mindset', 'Accountability'],
       image: 'https://m.media-amazon.com/images/I/51yoHjJDQ3L._SX329_BO1,204,203,200_.jpg',
       link: 'https://www.amazon.com/Extreme-Ownership-U-S-Navy-SEALs/dp/1250183863/ref=tmm_hrd_swatch_0?_encoding=UTF8&qid=1675112276&sr=8-1',
-      desc: 'Personal accountability a core principles for achieving success in professional and personal endeavors.'
+      desc: 'Personal accountability a core principle for achieving success in professional/ personal endeavors.'
     },
     {
       title: 'Atomic Habits',
       tags: ['Habits', 'Productivity'],
       image: 'https://m.media-amazon.com/images/I/51ZJ9RjiC0L._SX328_BO1,204,203,200_.jpg',
       link: 'https://www.amazon.com/Atomic-Habits-Proven-Build-Break/dp/1847941842/ref=tmm_pap_swatch_0?_encoding=UTF8&qid=1675112258&sr=1-1',
-      desc: 'Science-backed methods for creating and sustaining small, powerful habits that lead to personal growth.',
+      desc: 'Science-backed methods for creating and sustaining habits that lead to personal growth.',
     },
     {
       title: 'Peak',
       tags: ['Learning', 'Growth'],
       image: 'https://m.media-amazon.com/images/I/41Rc7VXWGxL._SY291_BO1,204,203,200_QL40_FMwebp_.jpg',
       link: 'https://www.amazon.com/Peak-Secrets-New-Science-Expertise/dp/0544947223/ref=tmm_pap_swatch_0?_encoding=UTF8&qid=1675112340&sr=8-1',
-      desc: 'Insights into how individuals can achieve mastery and reach their highest levels of performance.',
+      desc: 'How individuals can achieve mastery and reach their highest levels of performance.',
+    },
+    {
+      title: 'Miracle Morning',
+      tags: ['Habits', 'Productivity'],
+      image: 'https://m.media-amazon.com/images/I/51GeGGeqnHL._SX338_BO1,204,203,200_.jpg',
+      link: 'https://www.amazon.com/Miracle-Morning-Not-So-Obvious-Guaranteed-Transform/dp/097901977X/ref=tmm_hrd_swatch_0?_encoding=UTF8&qid=1692154398&sr=8-1',
+      desc: 'Powerful morning routine that helps boost personal growth and productivity.',
     },
   ];
   
@@ -88,7 +95,7 @@ const booksData = [
     background-color: var(--grey-5);
     border: 2px solid var(--grey-3);
     border-radius: 8px;
-    margin-right: 10px;
+    margin-right: 15px;
     flex: 0 0 auto;
     text-align: center;
   `;
@@ -101,8 +108,9 @@ const booksData = [
   `;
   
   const BookImage = styled.img`
+    margin: 0 auto;
     max-width: 100%;
-    height: 290px;
+    height: 265px;
     border-radius: 8px;
   `;
   
@@ -133,9 +141,9 @@ const booksData = [
 `;
   
   const BookDesc = styled.p`
-    max-width: 180px;
+    margin: 0 auto;
+    max-width: 185px;
     color: var(--grey-2);
-    margin: 0;
     padding: 5px;
 `;
   export default RecommendedBooks;

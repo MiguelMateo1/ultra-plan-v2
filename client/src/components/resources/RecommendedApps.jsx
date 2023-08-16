@@ -47,7 +47,7 @@ const appsData = [
   };
   
   const Section = styled.section`
-    background-color: var(--grey-3);
+    background-color: var(--grey-4);
     width: 100%;
     margin-bottom: 30px;
     padding: 3rem 5rem;
@@ -71,10 +71,10 @@ const appsData = [
   `;
   
   const App = styled.div`
-    background-color: var(--grey-4);
+    background-color: var(--grey-5);
     border: 2px solid var(--grey-5);
     border-radius: 8px;
-    margin-right: 10px;
+    margin-right: 15px;
     flex: 0 0 auto;
     text-align: center;
   `;
@@ -88,7 +88,7 @@ const appsData = [
   
   const AppImage = styled.img`
     width: 100%;
-    max-width: 200px;
+    max-width: 150px;
     height: auto;
     border-radius: 8px;
   `;
