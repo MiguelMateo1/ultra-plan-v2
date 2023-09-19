@@ -55,6 +55,7 @@ const appsData = [
     h2 {
       font-size: 24px;
       margin-bottom: 10px;
+      font-weight: 200;
     }
 
     @media (max-width: 768px) {
