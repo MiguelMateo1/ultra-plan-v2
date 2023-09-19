@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Styles from '../assets/styles/HoursSelectCSS';
 import { toast } from 'react-toastify';
 // react mui
-import Pagination from '@mui/material/Pagination';
+import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -10,12 +10,10 @@ import Modal from '@mui/material/Modal';
 
 // eslint-disable-next-line react/prop-types
 const HoursSelect = ({ day, hour, setHour, btnClick, name }) => {
-//   gets select hour
-  const handleClick = (e) => {
-    if (e.target.getAttribute('aria-label')) {
-        const hour = e.target.getAttribute('aria-label');
-        setHour(hour[hour.length - 1])
-    }
+
+  // sets selected hour
+  function hoursValue(value) {
+    setHour(value)
   }
 
   const handleBtnClick = () => {
@@ -51,10 +49,9 @@ const HoursSelect = ({ day, hour, setHour, btnClick, name }) => {
   return (
     <Styles>
         <Stack spacing={2}>
-            {hour 
-            ? <Pagination count={9} color='primary' onClick={handleClick} hidePrevButton hideNextButton/>
-            : <Pagination count={9} onClick={handleClick} hidePrevButton hideNextButton/>
-            }
+            <Slider aria-label="Temperature" defaultValue={1.5} getAriaValueText={hoursValue}
+              valueLabelDisplay="auto" step={.5} min={.5} max={12}
+            />
         </Stack>
         <button className='btn' onClick={handleOpen} disabled={name == null ? true : false}>
             {hour ? `Log ${hour > 1 ? `${hour} hours` : `${hour} hour`} on ${day}` : 'select date and hours to log'}
