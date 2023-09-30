@@ -29,6 +29,10 @@ const Styles = styled.section`
     transition: var(--transition);
     background-color: var(--primary-4);
   }
+  .btn:disabled {
+    cursor: not-allowed;
+    background-color: var(--grey-3);
+  }
   .demo-btn {
     background-color: var(--primary-2);
     color: var(--primary-4);
