@@ -26,28 +26,60 @@ app.use(cors({
     } 
 }));
 
-const db = mysql.createConnection({
+// const db = mysql.createConnection({
+//     host: process.env.DB_HOST,
+//     user: process.env.DB_USER,
+//     password: process.env.DB_PASSWORD,
+//     database: process.env.DB_NAME
+// });
+
+// Connect to the database
+// db.connect((err) => {
+//     if (err) {
+//       console.error('Error connecting to the database: ' + err);
+//       return;
+//     }
+//     console.log('Connected to the database');
+//   });
+
+// Create a connection pool
+const db = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
-});
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10, // Adjust this based on your requirements
+    queueLimit: 0,
+  });
 
-// Connect to the database
-db.connect((err) => {
+  // Use the pool to get a connection
+db.getConnection((err, connection) => {
     if (err) {
       console.error('Error connecting to the database: ' + err);
       return;
     }
     console.log('Connected to the database');
+    connection.release(); // Release the connection when done
   });
+  
+  // Attach the pool to the app for use in route handlers
+  app.set('pool', db);
 
 // login user 
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
     const sql = "SELECT * FROM app_users WHERE email = ?";
 
+    // Use the pool to get a connection
+    db.getConnection((err, connection) => {
+    if (err) {
+      console.error('Error getting a database connection: ' + err);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+
     db.query(sql, [email], (err, result) => {
+        connection.release();
         if (err) {
             console.error('Error executing the query: ' + err);
             return res.status(500).json({ message: 'Internal server error' });
@@ -81,6 +113,7 @@ app.post('/login', (req, res) => {
             return res.json({ auth: false, message: 'Invalid email or password' });
         }
     });    
+    })
 });
 // login user End=========
 
