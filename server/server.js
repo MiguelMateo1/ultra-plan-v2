@@ -78,7 +78,7 @@ app.post('/login', (req, res) => {
       return res.status(500).json({ message: 'Internal server error' });
     }
 
-    db.query(sql, [email], (err, result) => {
+    connection.query(sql, [email], (err, result) => {
         connection.release();
         if (err) {
             console.error('Error executing the query: ' + err);
