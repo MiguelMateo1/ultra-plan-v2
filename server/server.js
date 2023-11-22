@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql2');
+const mysql = require('mysql');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -49,8 +49,8 @@ const db = mysql.createPool({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     waitForConnections: true,
-    connectionLimit: 10, // Adjust this based on your requirements
-    queueLimit: 0,
+    connectionLimit: 5, // Adjust this based on your requirements
+    queueLimit: 5,
   });
 
   // Use the pool to get a connection
