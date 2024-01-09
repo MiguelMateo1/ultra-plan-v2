@@ -77,7 +77,7 @@ const LogHoursTabs = () => {
                     allowScrollButtonsMobile
                     aria-label="scrollable force tabs"
                     >
-                    {skillName ? skills.map((skill,index) => (
+                    {skills ? skills.map((skill,index) => (
                     <Tab key={index} label={skill.skill_name} value={skill.id}
                         icon={skillIcons[skill.icon]} iconPosition="top" />
                         ))
