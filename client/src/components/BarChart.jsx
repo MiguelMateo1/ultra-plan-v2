@@ -21,6 +21,11 @@ const BarChartComponent = ({ data, year }) => {
   if (data.length > 0) {
     const selectYearData = getObjectByYear(data,year);
 
+    if (!selectYearData) {
+      // If data for the selected year is not found, you can render a message or another component
+      return <p>No data available</p>;
+    }
+
     const months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
     //  get data and create object array format to pass into the chart
     const resultArray = months.map((month) => ({
