@@ -10,6 +10,7 @@ const Footer = () => {
 const Section = styled.section`
   background-color: var(--grey-6);
   width: 100%;
+  height: 700px;
   border-radius: 32px 32px 0px 0px;
   margin-bottom: -49px;
   padding: 3rem 5rem;

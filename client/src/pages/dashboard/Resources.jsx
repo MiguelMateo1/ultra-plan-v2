@@ -5,7 +5,7 @@ import RecommendedBooks from '../../components/resources/RecommendedBooks';
 import RecommendedApps from '../../components/resources/RecommendedApps';
 import Footer from '../../components/resources/Footer';
 // modal mui/styles
-import { Box, Button, Modal } from '@mui/material';
+import { Box, Modal } from '@mui/material';
 
 // modal styles
 const modalStyle = {
