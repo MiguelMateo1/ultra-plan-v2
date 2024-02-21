@@ -208,7 +208,7 @@ ul {
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--grey-3);
+  scrollbar-color: var(--grey-3) var(--grey-05) ;
 }
 
 /* Chrome, Edge and Safari */
