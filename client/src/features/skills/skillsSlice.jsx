@@ -115,7 +115,7 @@ const skillsSlice = createSlice({
       Object.assign(state, initialState);
     },
     setEditSkill: (state, { payload }) => {
-      return { ...state, isEditing: true, ...payload };
+      return { ...state, isEditing: true, ...payload, skill_icon: payload.icon };
     },
   },
   extraReducers: (builder) => {

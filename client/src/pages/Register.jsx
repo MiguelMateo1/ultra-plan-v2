@@ -107,7 +107,7 @@ function Register() {
         <button type='submit' className='btn btn-block' disabled={isLoading}>
           {member ? 'Login' : 'Register'}
         </button>
-        <button type='button' className='btn btn-block demo-btn' disabled={isLoading}
+        {/* <button type='button' className='btn btn-block demo-btn' disabled={isLoading}
           onClick={() =>
             dispatch(
               loginUser({ email: 'test@user.com', password: '777' })
@@ -115,7 +115,7 @@ function Register() {
           }
         >
           Demo User
-        </button>
+        </button> */}
         <p>
           {member ? 'Not a member yet?' : 'Already a member?'}
           <button type='button' onClick={toggleMember} className='member-btn'>

@@ -72,7 +72,13 @@ const AddSkill = () => {
       return;
     }
     // dispatch create skill
-    dispatch(createSkill({ skill_name, total_hours, days_per_week, hour_per_day, userId, skill_icon}));
+    // dispatch(createSkill({ skill_name, total_hours, days_per_week, hour_per_day, userId, skill_icon}));
+    dispatch(createSkill({ skill_name, total_hours, days_per_week, hour_per_day, userId, skill_icon}))
+      .unwrap()
+      .then(() => {
+        navigate('/my-skills');
+      });
+
   };
   // hanle from submit END=====
 
@@ -146,7 +152,8 @@ const AddSkill = () => {
             {skillIcons.map((icon,index)=> {
               return <div 
                 key={index} 
-                className={`skill-icon`}
+                // className={`skill-icon`}
+                className={`skill-icon ${Number(skill_icon) === index ? 'active' : ''}`}
                 onClick={(e)=> handleSkillIcon(e,index)}
               >
                 {icon}

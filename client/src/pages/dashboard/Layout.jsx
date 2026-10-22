@@ -9,7 +9,7 @@ const Layout = () => {
         <main className='dashboard'>
           <SmallSidebar />
           <BigSidebar />
-          <div>
+          <div className='ss'>
             <Navbar />
             <div className='dashboard-page'>
               <Outlet />
@@ -26,6 +26,9 @@ const Styles = styled.section`
     display: grid;
     grid-template-columns: 1fr;
     overflow-y: hidden;
+  }
+  .ss {
+    overflow-Y: auto;
   }
   .dashboard-page {
     width: 90vw;
