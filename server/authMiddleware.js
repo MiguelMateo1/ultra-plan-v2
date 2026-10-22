@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken');
 
 // Middleware function checks if the user is a demo user
 const isDemoUser = (req, res, next) => {
-    const demoId = 1; 
-    const demoSkillsId = 3
+    const demoId = 0; 
+    const demoSkillsId = 0
 
     const id = req.body.id; 
     const skillId = req.params.id;
